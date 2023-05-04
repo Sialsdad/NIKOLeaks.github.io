@@ -85,21 +85,18 @@
         </footer>
       </div>
       <script>
-        const downloadLink = document.getElementById('helicopter-download-link');
-        const downloadUrl = 'https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll';
-    
-        async function fetchDownloadCount(downloadUrl) {
-            try {
-                const response = await fetch(downloadUrl);
-                const downloadCount = await response.text();
-                downloadLink.innerText = `${downloadCount} Downloads`;
-            } catch (error) {
-                console.error(error);
-                downloadLink.innerText = 'Error fetching download count';
-            }
+        async function fetchDownloadCount(downloadLinkId) {
+          try {
+            const downloadLink = document.getElementById(downloadLinkId);
+            const response = await fetch(downloadLink.href, { method: 'HEAD' });
+            const downloadCount = response.headers.get('Content-Length');
+            downloadLink.innerText = `${downloadCount} Downloads`;
+          } catch (error) {
+            console.error(error);
+          }
         }
-    
-        fetchDownloadCount(downloadUrl);
-    </script>
+      
+        fetchDownloadCount('helicopter-download-link');
+      </script>
     </body>
   </html>
