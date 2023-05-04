@@ -75,7 +75,7 @@
             <tr>
               <td>Project Eclipse</td>
               <td>Latest?</td>
-              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" id="helicopter-download-link" onclick="incrementDownloadCount('helicopter-download-count')">Download</a> <span id="helicopter-download-count">(0 Downloads)</span></td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" onclick="incrementDownloadCount('my-file')">Download</a> (<span id="my-file-count">0</span> Downloads)</td>
               <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
              </tr>
             </tbody>
@@ -85,12 +85,23 @@
         </footer>
       </div>
       <script>
-function incrementDownloadCount(downloadCountId) {
-    const downloadCountElement = document.getElementById(downloadCountId);
-    let downloadCount = parseInt(downloadCountElement.textContent.match(/\d+/)[0]) || 0;
-    downloadCount++;
-    downloadCountElement.textContent = `(${downloadCount} Downloads)`;
-}
-      </script>      
+        function incrementDownloadCount(key) {
+          let count = localStorage.getItem(key) || 0;
+          count++;
+          localStorage.setItem(key, count);
+          document.getElementById(key + '-count').textContent = count;
+        }
+          
+        window.onload = function() {
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.endsWith('-count')) {
+              const id = key.slice(0, -6);
+              const count = localStorage.getItem(key);
+              document.getElementById(id + '-count').textContent = count;
+            }
+          }
+        };
+        </script>
     </body>
   </html>
