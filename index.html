@@ -95,6 +95,7 @@
                 downloadLink.innerText = `${downloadCount} Downloads`;
             } catch (error) {
                 console.error(error);
+                downloadLink.innerText = 'Error fetching download count';
             }
         }
     
