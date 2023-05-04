@@ -112,18 +112,22 @@
         </footer>
       </div>
       <script>
-        function incrementDownloadCounter() {
-          let count = parseInt(localStorage.getItem("download-count")) || 0;
+        function incrementDownloadCounter(identifier) {
+          let downloads = JSON.parse(localStorage.getItem("downloads")) || {};
+          let count = downloads[identifier] || 0;
           count++;
-          localStorage.setItem("download-count", count);
-          document.getElementById("download-counter").textContent = `(${count} Downloads)`;
+          downloads[identifier] = count;
+          localStorage.setItem("downloads", JSON.stringify(downloads));
+          document.getElementById(`${identifier}-download-counter`).textContent = `(${count} Downloads)`;
         }
-  
-        // Auto update the download counter
+      
+        // Auto update the download counter for each identifier
         window.onload = function() {
-          let count = parseInt(localStorage.getItem("download-count")) || 0;
-          document.getElementById("download-counter").textContent = `(${count} Downloads)`;
+          let downloads = JSON.parse(localStorage.getItem("downloads")) || {};
+          for (let identifier in downloads) {
+            document.getElementById(`${identifier}-download-counter`).textContent = `(${downloads[identifier]} Downloads)`;
+          }
         };
-      </script>
+      </script>      
     </body>
   </html>
