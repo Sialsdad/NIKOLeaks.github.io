@@ -75,7 +75,7 @@
             <tr>
               <td>Project Eclipse</td>
               <td>Latest?</td>
-              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" onclick="incrementDownloadCount('my-file')">Download</a> (<span id="my-file-count">0</span> Downloads)</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" id="helicopter-download-link">Loading...</a></td>
               <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
              </tr>
             </tbody>
@@ -85,23 +85,20 @@
         </footer>
       </div>
       <script>
-        function incrementDownloadCount(key) {
-          let count = localStorage.getItem(key) || 0;
-          count++;
-          localStorage.setItem(key, count);
-          document.getElementById(key + '-count').textContent = count;
-        }
-          
-        window.onload = function() {
-          for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key.endsWith('-count')) {
-              const id = key.slice(0, -6);
-              const count = localStorage.getItem(key);
-              document.getElementById(id + '-count').textContent = count;
+        const downloadLink = document.getElementById('helicopter-download-link');
+        const downloadUrl = 'https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll';
+    
+        async function fetchDownloadCount(downloadUrl) {
+            try {
+                const response = await fetch(downloadUrl);
+                const downloadCount = await response.text();
+                downloadLink.innerText = `${downloadCount} Downloads`;
+            } catch (error) {
+                console.error(error);
             }
-          }
-        };
-        </script>
+        }
+    
+        fetchDownloadCount(downloadUrl);
+    </script>
     </body>
   </html>
