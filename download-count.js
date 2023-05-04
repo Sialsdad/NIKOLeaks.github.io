@@ -12,7 +12,3 @@ function updateDownloadCount() {
   // Update the download count element with the new count
   downloadCount.innerText = count;
 }
-
-// Attach the updateDownloadCount function to the download link
-const downloadLink = document.querySelector('a[href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll"]');
-downloadLink.addEventListener('click', updateDownloadCount);
