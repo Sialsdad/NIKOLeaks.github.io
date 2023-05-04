@@ -88,9 +88,12 @@
             <tr>
               <td>Project Eclipse</td>
               <td>Latest?</td>
-              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" onclick="incrementDownloadCounter()">Download (<span id="downloadCounter"></span>)</a></td>
+              <td>
+                <a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" onclick="incrementDownloadCounter()">Download</a>
+                <span id="download-counter"></span>
+              </td>
               <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
-             </tr>
+            </tr>
             </tbody>
           </table>
         </main>
@@ -99,11 +102,17 @@
       </div>
       <script>
         function incrementDownloadCounter() {
-          let downloadCounter = document.getElementById('downloadCounter');
-          let count = parseInt(downloadCounter.innerText);
+          let count = parseInt(localStorage.getItem("download-count")) || 0;
           count++;
-          downloadCounter.innerText = count;
+          localStorage.setItem("download-count", count);
+          document.getElementById("download-counter").textContent = `(${count} Downloads)`;
         }
+  
+        // Auto update the download counter
+        window.onload = function() {
+          let count = parseInt(localStorage.getItem("download-count")) || 0;
+          document.getElementById("download-counter").textContent = `(${count} Downloads)`;
+        };
       </script>
     </body>
   </html>
