@@ -5,24 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIKOLeaks</title>
     <link rel="stylesheet" href="css/style.css">
-    <script>
-      // Initialize download counter
-      let downloadCount = localStorage.getItem("downloadCount") || 0;
-
-      // Update download count in UI
-      function updateDownloadCount() {
-        const downloadCountElem = document.getElementById("downloadCount");
-        downloadCountElem.textContent = downloadCount;
-      }
-      updateDownloadCount();
-
-      // Increment download counter when "Download" link is clicked
-      function incrementDownloadCounter() {
-        downloadCount++;
-        localStorage.setItem("downloadCount", downloadCount);
-        updateDownloadCount();
-      }
-    </script>
   </head>
   <body>
     <div class="container">
@@ -106,7 +88,7 @@
             <tr>
               <td>Project Eclipse</td>
               <td>Latest?</td>
-              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" onclick="incrementDownloadCounter()">Download</a> (<span id="downloadCount">0</span> downloads)</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank" onclick="incrementDownloadCounter()">Download (<span id="downloadCounter"></span>)</a></td>
               <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
              </tr>
             </tbody>
@@ -115,5 +97,13 @@
         <footer>
         </footer>
       </div>
+      <script>
+        function incrementDownloadCounter() {
+          let downloadCounter = document.getElementById('downloadCounter');
+          let count = parseInt(downloadCounter.innerText);
+          count++;
+          downloadCounter.innerText = count;
+        }
+      </script>
     </body>
   </html>
