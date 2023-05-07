@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKOLeaks</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Cracks/Leaks</h1>
+        <button class="btn" onclick="window.location.href='index.html'">Go To Home</button>
+        <button class="btn" onclick="window.location.href='Normal.html'">Go To Normal Mods</button>
+        <button class="btn" onclick="window.location.href='https://discord.gg/nikoloader'">Discord</button>
+      </header>
+      <main>
+        <table>
+          <thead>
+            <tr>
+              <th>Menu Name</th>
+              <th>Menu Version</th>
+              <th>Download</th>
+              <th>Discord</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Flux Paid Menu</td>
+              <td>V1</td>
+              <td><a href="https://github.com/NIKOLeaks/Flux-Paid-Menu/Flux_V1.dll" target="_blank">Download</a></td>
+              <td><a href="https://discord.gg/fluxservices" target="_blank">Discord<a></td>
+            </tr>
+            <tr>
+              <td>Fluid</td>
+              <td>Latest?</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780829047984168/Latest_Fluid.dll" target="_blank">Download</a></td>
+              <td><a href="https://discord.gg/jerkmate" target="_blank">Discord<a></td>
+            </tr>
+            <tr>
+              <td>AI GUI</td>
+              <td>V1.0</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1091811515692240971/1091818624236392559/AI_GUI_1.dll" target="_blank">Download</a></td>
+              <td><a href="https://discord.gg/TVJewDtADg" target="_blank">Discord<a></td>
+            </tr>
+            <tr>
+              <td>Hiro Mod Menu</td>
+              <td>V3.0</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1091811515692240971/1091819434584309780/Hiro_Paid_V3_1.dll" target="_blank">Download</a></td>
+              <td><a href="https://discord.gg/hiros" target="_blank">Discord<a></td>
+            </tr>
+            <tr>
+              <td>Overflow</td>
+              <td>V1</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102789406202540032/overflow_january.dll" target="_blank">Download</a></td>
+              <td><a href="https://discord.gg/overflow" target="_blank">Discord<a></td>
+            </tr>
+            <tr>
+              <td>Void Paid Menu</td>
+              <td>Latest?</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1104235338320334898/Void_Paid_Menu.dll" target="_blank">Download</a></a></td>
+              <td><a href="https://discord.gg/voidclient" target="_blank">Discord [IDK]<a></td>
+             </tr>
+             <tr>
+              <td>Galactic Mod Menu</td>
+              <td>V1.0</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1091811515692240971/1091819297581580450/Galactic_Mod_Menu_1.dll" target="_blank">Download<a></td>
+              <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
+            </tr>
+            <tr>
+              <td>Hydrax Paid Mod Menu</td>
+              <td>V1.0</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102781295068713060/Hydrax_Paid_Menu_V1.0.dll" target="_blank">Download<a></td>
+              <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
+            </tr>
+            <tr>
+              <td>Project Ziggy Paid Menu</td>
+              <td>V4</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102781138017202196/Projz1ggyFix.dll" target="_blank">Download</a></td>
+              <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
+            </tr>
+            <tr>
+              <td>Project Eclipse</td>
+              <td>Latest?</td>
+              <td><a href="https://cdn.discordapp.com/attachments/1086827165615652924/1102780724060356658/Project_Eclipse.dll" target="_blank">Download</a></a></td>
+              <td><a href="https://discord.gg/nikoloader" target="_blank">Discord [IDK]<a></td>
+             </tr>
+            </tbody>
+          </table>
+        </main>
+        <footer>
+        </footer>
+      </div>
+      <script>
+        async function fetchDownloadCount(downloadLinkId) {
+          try {
+            const downloadLink = document.getElementById(downloadLinkId);
+            const response = await fetch(downloadLink.href, { method: 'HEAD' });
+            const downloadCount = response.headers.get('Content-Length');
+            downloadLink.innerText = `${downloadCount} Downloads`;
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      
+        fetchDownloadCount('helicopter-download-link');
+      </script>
+    </body>
+  </html>
