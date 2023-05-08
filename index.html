@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIKOLeaks</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -24,11 +25,33 @@
           <button class="btn" onclick="location.href='Normal.html'">Go To Normal Mods</button>
           <button class="btn" onclick="location.href='leaks.html'">Go To leaks Mods</button>
         </div>
-        <p id="counter">0</p>
       </main>
       <footer>
+        <p id="visitor-counter"></p>
       </footer>
     </div>
-    <script src="js/script.js"></script>
+
+    <script>
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+
+      let numVisits = parseInt(getCookie("num_visits")) || 0;
+      numVisits++;
+      document.cookie = `num_visits=${numVisits}`;
+
+      $("#visitor-counter").text(`Number of visits: ${numVisits}`);
+
+      $.ajax({
+        type: "POST",
+        url: "https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l",
+        data: JSON.stringify({
+          content: `New visitor on NIKOLeaks! Total visits: ${numVisits}`
+        }),
+        contentType: "application/json"
+      });
+    </script>
   </body>
 </html>
