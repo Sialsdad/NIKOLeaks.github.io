@@ -28,8 +28,12 @@
       <footer>
       </footer>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+      const webhookId = "1105161141765808138";
+  const webhookToken = "gXGG0tXtDGPTk6mUGP7yPfdXvqTvfQaYoLxWLbDcmt3Ii32Yi_bZyTh1V7ZKakk-eKI9";
+  const webhookUrl = `https://discord.com/api/webhooks/${webhookId}/${webhookToken}`;        
       // Check if the visitor has a visitor ID cookie
       let visitorId = getCookie("visitorId");
       if (!visitorId) {
@@ -37,14 +41,14 @@
         visitorId = generateId();
         setCookie("visitorId", visitorId);
       }
-    
-      // Send a POST request to the server-side script with the visitor count
+
+      // Send a POST request to the Discord webhook with the visitor count
       setTimeout(() => {
-        axios.post('visitor.php', {
-          visitorId: visitorId
-        });
-      }, 10); 
-    
+    axios.post(webhookUrl, {
+      content: `New visitor with ID ${visitorId}`
+    });
+  }, 10); 
+
       // Function to generate a unique visitor ID
       function generateId() {
         return Math.random().toString(36).substr(2, 9);
