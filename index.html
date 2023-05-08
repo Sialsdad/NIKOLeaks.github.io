@@ -24,30 +24,11 @@
           <button class="btn" onclick="location.href='Normal.html'">Go To Normal Mods</button>
           <button class="btn" onclick="location.href='leaks.html'">Go To leaks Mods</button>
         </div>
-        <?php
-          $counter_file = 'counter.txt';
-          $discord_webhook_url = 'https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l';
-          $current_count = 0;
-          if (file_exists($counter_file)) {
-            $current_count = intval(file_get_contents($counter_file));
-          }
-          if (!isset($_COOKIE['visitor_id'])) {
-            $current_count++;
-            file_put_contents($counter_file, strval($current_count));
-            $payload = json_encode(array('content' => 'New visitor! Total visitors: '.$current_count));
-            $ch = curl_init($discord_webhook_url);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_exec($ch);
-            curl_close($ch);
-            setcookie('visitor_id', uniqid(), time() + 3600*24*30);
-          }
-        ?>
+        <p id="counter">0</p>
       </main>
       <footer>
-        <?php echo 'Total visitors: '.$current_count; ?>
       </footer>
     </div>
+    <script src="js/script.js"></script>
   </body>
 </html>
