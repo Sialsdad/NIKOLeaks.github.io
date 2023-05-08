@@ -33,29 +33,24 @@
         </footer>
       </div>
       <script>
-        function countVisitor() {
-          var count = localStorage.getItem("visitorCount");
-          if (count === null) {
-            count = 1;
-          } else {
-            count = parseInt(count) + 1;
-          }
-          localStorage.setItem("visitorCount", count);
-          document.getElementById("visitorCount").innerHTML = count;
-          
-          // Send visitor count to Discord webhook
-          var webhookUrl = "https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l";
-          var message = "New visitor! Total visitors: " + count;
-          fetch(webhookUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              content: message
-            })
-          });
+        // Get the visitor count from the local storage, or initialize it to 0
+        var visitorCount = parseInt(localStorage.getItem('visitorCount')) || 0;
+    
+        // Increment the visitor count if it's a new visit
+        if (!localStorage.getItem('visited')) {
+          visitorCount++;
+          localStorage.setItem('visited', true);
+          localStorage.setItem('visitorCount', visitorCount);
         }
+    
+        // Update the visitor count on the page
+        document.getElementById('visitor-count').textContent = visitorCount;
+    
+        // Send the visitor count to Discord webhook file
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({ content: 'New visitor count: ' + visitorCount }));
       </script>
     </body>
   </html>
