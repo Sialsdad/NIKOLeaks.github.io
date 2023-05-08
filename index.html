@@ -24,9 +24,40 @@
           <button class="btn" onclick="location.href='Normal.html'">Go To Normal Mods</button>
           <button class="btn" onclick="location.href='leaks.html'">Go To leaks Mods</button>
         </div>
+        <p id="counter">0</p>
       </main>
       <footer>
       </footer>
     </div>
+    <script>
+      // Get the current count from localStorage or set it to 0
+      let count = parseInt(localStorage.getItem('count')) || 0;
+      
+      // Update the counter element with the current count
+      let counterElement = document.getElementById('counter');
+      counterElement.innerText = count;
+      
+      // Increment the count and update the counter element and localStorage
+      function incrementCount() {
+        count++;
+        counterElement.innerText = count;
+        localStorage.setItem('count', count);
+        
+        // Send the count to the Discord webhook
+        let webhookUrl = 'https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l';
+        fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            content: `New visitor count: ${count}`
+          })
+        });
+      }
+      
+      // Add an event listener to the window to increment the count when the page is loaded or reloaded
+      window.addEventListener('load', incrementCount);
+    </script>
   </body>
 </html>
