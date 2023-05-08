@@ -1,62 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIKOLeaks</title>
-    <link rel="stylesheet" href="css/style.css">
-  </head>
-  <body>
-    <script>
-      // Get the current visit count from local storage or initialize to 0
-      let visitCount = localStorage.getItem('visitCount');
-      if (!visitCount) {
-        visitCount = 0;
-      }
-
-      // Increment the visit count and save to local storage
-      visitCount++;
-      localStorage.setItem('visitCount', visitCount);
-
-      // Update the visit count in the HTML
-      document.getElementById('visit-count').textContent = visitCount;
-
-      // Send the visit count to a Discord webhook
-      const webhookUrl = 'https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l';
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ content: `New visit! Total visits: ${visitCount}` })
-      });
-    </script>
-    <div class="container">
-      <header>
-        <h1>Home</h1>
-        <button class="btn" onclick="window.location.href='https://discord.gg/nikoloader'">Discord</button>
-      </header>
-      <main>
-        <table>
-          <td>Hello Welcome To NIKO Leaks</td>
-          <td>You Will Get Most Of The Paid Menus For Free :)</td>
-          <td>Have A Good Time</td>
-          <thead>
-            <tr>
-              <button class="btn" onclick="window.location.href='Normal.html'">Go To Normal Mods</button>
-              <button class="btn" onclick="window.location.href='leaks.html'">Go To Leaks Mods</button>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-            </tr>
-            </tbody>
-          </table>
-        </main>
-        <footer>
-        </footer>
-       </div>
-      <script>
-      </script>
-    </body>
-  </html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIKOLeaks</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Home</h1>
+      <button class="btn" onclick="window.location.href='https://discord.gg/nikoloader'">Discord</button>
+    </header>
+    <main>
+      <table>
+        <tr>
+          <td>Hello, welcome to NIKO Leaks. You will get most of the paid menus for free. Have a good time!</td>
+        </tr>
+      </table>
+      <div class="buttons">
+        <button class="btn" onclick="window.location.href='Normal.html'">Go To Normal Mods</button>
+        <button class="btn" onclick="window.location.href='leaks.html'">Go To Leaks Mods</button>
+      </div>
+    </main>
+    <footer>
+    </footer>
+  </div>
+  <script>
+  </script>
+</body>
+</html>
