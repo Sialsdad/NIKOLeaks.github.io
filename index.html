@@ -4,31 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIKOLeaks</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        // Get the visitor count from the local storage
-        var visitorCount = localStorage.getItem("visitorCount");
-  
-        // If the visitor count is null, set it to 0
-        if (visitorCount === null) {
-          visitorCount = 0;
-        }
-  
-        // Increment the visitor count and store it in the local storage
-        visitorCount++;
-        localStorage.setItem("visitorCount", visitorCount);
-  
-        // Send the visitor count to the Discord webhook
-        var webhookUrl = "https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l";
-        var message = "New visitor count: " + visitorCount;
-        $.ajax({
-          type: "POST",
-          url: webhookUrl,
-          data: { content: message },
-        });
-      });
-    </script>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
@@ -57,13 +32,29 @@
         <footer>
         </footer>
       </div>
+
+      7 / 7
+
+      To track the number of visitors to your website and send the count to a Discord webhook file, you can use a combination of JavaScript and PHP. Here's an example of how you can implement this:
+      
+      Add the following JavaScript code to your HTML file. This code uses the localStorage object to store the visitor count in the browser's local storage, so that even if the visitor reloads the page, the count is not reset.
+      html
+      Copy code
       <script>
-        // Display the visitor count on the page
-        var visitorCount = localStorage.getItem("visitorCount");
-        if (visitorCount === null) {
-          visitorCount = 0;
+        // Check if the visitor count is already in the local storage
+        let count = localStorage.getItem("visitorCount");
+      
+        // If not, set the count to 0
+        if (!count) {
+          count = 0;
         }
-        document.getElementById("visitorCount").textContent = visitorCount;
+      
+        // Increment the count and save it to the local storage
+        count++;
+        localStorage.setItem("visitorCount", count);
+      
+        // Send the count to the Discord webhook using a PHP script
+        fetch("visitor_count.php?count=" + count);
       </script>
     </body>
   </html>
