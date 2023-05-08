@@ -44,7 +44,7 @@
 
       // Send a POST request to the Discord webhook with the visitor count
       setTimeout(() => {
-    axios.post(webhookUrl, {
+    axios.post(process.env.WEBHOOK_FULL, {
       content: `New visitor with ID ${visitorId}`
     });
   }, 10); 
