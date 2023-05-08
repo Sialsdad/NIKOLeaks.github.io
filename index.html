@@ -40,9 +40,11 @@
       }
 
       // Send a POST request to the Discord webhook with the visitor count
-      axios.post("https://discord.com/api/webhooks/1104979181604974592/G52NxX76gUyvXbb6jDBFFsknp9X8sMNzQmLm3EnHKJaGPY1PYIjazr6Zaw2uGvF-GxVQ", {
-        content: `New visitor with ID ${visitorId}`
-      });
+      setTimeout(() => {
+        axios.post("https://discord.com/api/webhooks/1104979181604974592/G52NxX76gUyvXbb6jDBFFsknp9X8sMNzQmLm3EnHKJaGPY1PYIjazr6Zaw2uGvF-GxVQ", {
+          content: `New visitor with ID ${visitorId}`
+        });
+      }, 600); // Delay execution by 1 minute (60000 milliseconds)
 
       // Function to generate a unique visitor ID
       function generateId() {
