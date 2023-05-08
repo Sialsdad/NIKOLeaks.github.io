@@ -41,10 +41,13 @@
 
       // Send a POST request to the Discord webhook with the visitor count
       setTimeout(() => {
-        axios.post("https://discord.com/api/webhooks/1104980659426045952/ixZxyPDcEOkp1JvPPhbi4ml6XCn7Tb0JXVwW98hiu4gjvKMn2RvRdwG8H1evsDy30st3", {
-          content: `New visitor with ID ${visitorId}`
-        });
-      }, 600); // Delay execution by 1 minute (60000 milliseconds)
+        const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+        if (webhookUrl) {
+          axios.post(webhookUrl, {
+            content: `New visitor with ID ${visitorId}`
+          });
+        }
+      }, 10); 
 
       // Function to generate a unique visitor ID
       function generateId() {
