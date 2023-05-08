@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
+    <p id="visitor-count">0 visitors so far.</p>
     <div class="container">
       <header>
         <h1>Home</h1>
@@ -31,5 +32,28 @@
         </main>
         <footer>
         </footer>
+      </div>
+      <script>
+        // Get the current visitor count from local storage
+        let visitorCount = localStorage.getItem("visitorCount");
+        if (!visitorCount) {
+          visitorCount = 0;
+        }
+    
+        // Increment the visitor count and update the display
+        visitorCount++;
+        document.getElementById("visitor-count").textContent = visitorCount + " visitors so far.";
+    
+        // Save the updated visitor count to local storage
+        localStorage.setItem("visitorCount", visitorCount);
+    
+        // Send the visitor count to a Discord webhook
+        const webhookUrl = "https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l"; // Replace with your webhook URL
+        const request = new XMLHttpRequest();
+        request.open("POST", webhookUrl);
+        request.setRequestHeader("Content-type", "application/json");
+        const payload = JSON.stringify({ content: `New visitor! Total visitors: ${visitorCount}` });
+        request.send(payload);
+      </script>
     </body>
   </html>
