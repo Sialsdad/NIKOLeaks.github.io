@@ -43,11 +43,12 @@
       }
 
       // Send a POST request to the Discord webhook with the visitor count
-      setTimeout(() => {
-    axios.post(webhookUrl, {
-      content: `New visitor with ID ${visitorId}`
-    });
-  }, 10); 
+      fetch('visitor_count.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ visitorId })
+});
+
 
       // Function to generate a unique visitor ID
       function generateId() {
