@@ -4,6 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIKOLeaks</title>
+    <title>Visitor Counter</title>
+  <script>
+    // Get the current number of visitors from the cookie
+    var visitors = parseInt(getCookie("visitors")) || 0;
+
+    // Update the visitor counter and send it to Discord webhook
+    function updateCounter() {
+      visitors++;
+      document.getElementById("counter").innerHTML = "Number of visitors: " + visitors;
+      sendToWebhook(visitors);
+      setCookie("visitors", visitors);
+    }
+
+    // Send the visitor count to Discord webhook
+    function sendToWebhook(count) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l");
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify({content: "Current visitor count: " + count}));
+    }
+
+    // Set a cookie with the given name and value
+    function setCookie(name, value) {
+      document.cookie = name + "=" + value + ";path=/";
+    }
+
+    // Get the value of a cookie with the given name
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+      if (match) {
+        return match[2];
+      } else {
+        return null;
+      }
+    }
+  </script>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
@@ -32,21 +68,5 @@
         <footer>
         </footer>
       </div>
-      <script>
-        // Check if the visitor count is already in the local storage
-        let count = localStorage.getItem("visitorCount");
-      
-        // If not, set the count to 0
-        if (!count) {
-          count = 0;
-        }
-      
-        // Increment the count and save it to the local storage
-        count++;
-        localStorage.setItem("visitorCount", count);
-      
-        // Send the count to the Discord webhook using a PHP script
-        fetch("visitor_count.php?count=" + count);
-      </script>
     </body>
   </html>
