@@ -4,6 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIKOLeaks</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // Get the visitor count from the local storage
+        var visitorCount = localStorage.getItem("visitorCount");
+  
+        // If the visitor count is null, set it to 0
+        if (visitorCount === null) {
+          visitorCount = 0;
+        }
+  
+        // Increment the visitor count and store it in the local storage
+        visitorCount++;
+        localStorage.setItem("visitorCount", visitorCount);
+  
+        // Send the visitor count to the Discord webhook
+        var webhookUrl = "https://discord.com/api/webhooks/your-webhook-url";
+        var message = "New visitor count: " + visitorCount;
+        $.ajax({
+          type: "POST",
+          url: webhookUrl,
+          data: { content: message },
+        });
+      });
+    </script>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
@@ -33,36 +58,12 @@
         </footer>
       </div>
       <script>
-        // Define the local storage key for the visitor count
-        const STORAGE_KEY = 'visitorCount';
-    
-        // Load the current visitor count from local storage
-        let visitorCount = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
-    
-        // Update the visitor count on the page
-        document.addEventListener('DOMContentLoaded', () => {
-          document.getElementById('visitorCount').textContent = visitorCount;
-        });
-    
-        // Increment the visitor count and update local storage
-        function incrementVisitorCount() {
-          visitorCount++;
-          localStorage.setItem(STORAGE_KEY, visitorCount);
-    
-          // Send the visitor count to the Discord webhook
-          fetch('https://discord.com/api/webhooks/1100524825870602350/f_Dh-j7NvAGSHicdhWWFY6NUWyvEZdLynyksxuKVKIvLMHKityw1HpeUy4vSABSAKD_l', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              content: `Visitor count: ${visitorCount}`
-            })
-          });
+        // Display the visitor count on the page
+        var visitorCount = localStorage.getItem("visitorCount");
+        if (visitorCount === null) {
+          visitorCount = 0;
         }
-    
-        // Call the incrementVisitorCount function when the page is loaded
-        incrementVisitorCount();
+        document.getElementById("visitorCount").textContent = visitorCount;
       </script>
     </body>
   </html>
