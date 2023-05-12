@@ -49,6 +49,12 @@
               <td><a href="https://github.com/ZenonGTAG/HelicopterMonke/releases/tag/release" target="_blank" id="helicopter-download-link">Loading...</a></td>
               <td><a href="https://discord.gg/mfWy4ME4nr" target="_blank">Discord</a></td>
             </tr>
+            <tr>
+              <td>Sticky Cosmetics</td>
+              <td>V1.0</td>
+              <td><a href="https://github.com/NIKOLeaks/Sticky-Cosmetics/releases/tag/v1" target="_blank" id="sticky-cosmetics-helicopter-download-link">Loading...</a></td>
+              <td><a href="idk_blank" target="_blank">Discord</a></td>
+            </tr>
           </tbody>
         </table>
       </main>
@@ -60,6 +66,7 @@
       const fpcDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/FirstPersonCamera/releases/latest';
       const monkeDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/MonkeSoundboard/releases/latest';
       const helicopterDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/HelicopterMonke/releases/latest';
+      const stickyCosmeticsDownloadUrl = 'https://api.github.com/repos/NIKOLeaks/Sticky-Cosmetics/releases/latest';
 
       async function fetchDownloadCount(downloadUrl, downloadLinkId) {
         try {
@@ -77,6 +84,7 @@
       fetchDownloadCount(fpcDownloadUrl, 'fpc-download-link');
       fetchDownloadCount(monkeDownloadUrl, 'monke-download-link');
       fetchDownloadCount(helicopterDownloadUrl, 'helicopter-download-link');
+      fetchDownloadCount(stickyCosmeticsDownloadUrl, 'sticky-cosmetics-helicopter-download-link');
     </script>
   </body>
 </html>
