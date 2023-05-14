@@ -55,6 +55,12 @@
               <td><a href="https://github.com/NIKOLeaks/Sticky-Cosmetics/releases/tag/v1" target="_blank" id="sticky-cosmetics-helicopter-download-link">Loading...</a></td>
               <td><a href="idk_blank" target="_blank">Discord</a></td>
             </tr>
+            <tr>
+              <td>Slingshot Locker</td>
+              <td>V1.0</td>
+              <td><a href="https://github.com/NIKOLeaks/Slingshot-Locker/releases/tag/latest" target="_blank" id="slingshotlocker-download-link">Loading...</a></td>
+              <td><a href="idk_blank" target="_blank">Discord</a></td>
+            </tr>
           </tbody>
         </table>
       </main>
@@ -67,6 +73,7 @@
       const monkeDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/MonkeSoundboard/releases/latest';
       const helicopterDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/HelicopterMonke/releases/latest';
       const stickyCosmeticsDownloadUrl = 'https://api.github.com/repos/NIKOLeaks/Sticky-Cosmetics/releases/latest';
+      const slingshotLockerDownloadUrl = 'https://api.github.com/repos/NIKOLeaks/Slingshot-Locker/releases/latest';
 
       async function fetchDownloadCount(downloadUrl, downloadLinkId) {
         try {
@@ -85,6 +92,7 @@
       fetchDownloadCount(monkeDownloadUrl, 'monke-download-link');
       fetchDownloadCount(helicopterDownloadUrl, 'helicopter-download-link');
       fetchDownloadCount(stickyCosmeticsDownloadUrl, 'sticky-cosmetics-helicopter-download-link');
+      fetchDownloadCount(slingshotLockerDownloadUrl, 'slingshotlocker-download-link');
     </script>
   </body>
 </html>
