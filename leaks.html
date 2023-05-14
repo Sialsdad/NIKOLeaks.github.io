@@ -91,19 +91,5 @@
         <footer>
         </footer>
       </div>
-      <script>
-        async function fetchDownloadCount(downloadLinkId) {
-          try {
-            const downloadLink = document.getElementById(downloadLinkId);
-            const response = await fetch(downloadLink.href, { method: 'HEAD' });
-            const downloadCount = response.headers.get('Content-Length');
-            downloadLink.innerText = `${downloadCount} Downloads`;
-          } catch (error) {
-            console.error(error);
-          }
-        }
-      
-        fetchDownloadCount('helicopter-download-link');
-      </script>
     </body>
   </html>
