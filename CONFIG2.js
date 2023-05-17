@@ -3,7 +3,7 @@ window.onload = function() {
    };
     //-----------Header Things----------\\
     var ProfilePicture = "Pfp Link";
-    var UserName = "UserName";//username here
+    var UserName = "notfishvr Link Tree";//username here
     //-----------Button Names----------\\
     var Button1Name = "discord";//Put Your button names here
     var Button2Name = "Button2";
@@ -11,9 +11,9 @@ window.onload = function() {
     var Button4Name = "Button4";
     //-----------Button Links----------\\
     var Button1Link = "https://discord.gg/nikoloader";//put button links here
-    var Button2Link = "";
-    var Button3Link = "";
-    var Button4Link = "";
+    var Button2Link = "https://discord.gg/nikoloader";
+    var Button3Link = "https://discord.gg/nikoloader";
+    var Button4Link = "https://discord.gg/nikoloader";
     //-----------Footer----------\\
     var Copyright = "© Copyright [Year], [Copmany], [Rights]";
     //------------Button Config------------\\
