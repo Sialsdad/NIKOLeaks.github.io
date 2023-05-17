@@ -5,12 +5,12 @@ window.onload = function() {
     var ProfilePicture = "Pfp Link";
     var UserName = "UserName";//username here
     //-----------Button Names----------\\
-    var Button1Name = "button1";//Put Your button names here
+    var Button1Name = "discord";//Put Your button names here
     var Button2Name = "Button2";
     var Button3Name = "Button3";
     var Button4Name = "Button4";
     //-----------Button Links----------\\
-    var Button1Link = "";//put button links here
+    var Button1Link = "https://discord.gg/nikoloader";//put button links here
     var Button2Link = "";
     var Button3Link = "";
     var Button4Link = "";
