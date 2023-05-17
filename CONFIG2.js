@@ -57,7 +57,7 @@ function OnStart(){
  }
  function ButtonOpen1()
  {
-   window.open(Button1Link)
+   window.open("https://discord.gg/nikoloader")
  }
  function ButtonOpen2()
  {
