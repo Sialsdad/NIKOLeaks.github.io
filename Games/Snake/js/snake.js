@@ -2,97 +2,61 @@ const Direction = {
     Up: 1,
     Down: 2,
     Left: 3,
-    Right: 4
+    Right: 4,
+  };
+  
+  const GameConfig = {
+    gridSize: 30,
+    tileSize: 10,
+    gameSpeed: 90,
   };
   
   class Game {
     constructor() {
-      this.snake = new Snake();
-      this.apple = new Apple();
+      this.snake = new Snake(this);
+      this.apple = new Apple(this);
       this.gameOver = false;
-      this.canvas = document.getElementById("game-window");
-      this.context = this.canvas.getContext("2d");
+      this.gameWindow = document.getElementById("game-window");
+      this.ctx = this.gameWindow.getContext("2d");
       this.scoreTag = document.getElementById("score");
-    }
-  
-    start() {
-      this.tick();
-      this.renderTick();
-      this.setupEventListeners();
+      this.updateScore();
     }
   
     tick() {
-      if (this.gameOver) return;
-      this.snake.move();
-      this.checkCollision();
-      this.updateScore();
-      setTimeout(() => this.tick(), 90);
+      setInterval(() => {
+        if (this.gameOver) return;
+        this.snake.move();
+      }, GameConfig.gameSpeed);
     }
   
     renderTick() {
-      this.clearCanvas();
-      this.snake.draw(this.context);
-      this.apple.render(this.context);
-      requestAnimationFrame(() => this.renderTick());
-    }
-  
-    clearCanvas() {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-  
-    checkCollision() {
-      if (this.snake.getPosition().equals(this.apple.position)) {
-        this.snake.grow();
-        this.apple.move();
-      }
-  
-      if (this.snake.getTail().some((pos, i) => i !== 0 && pos.equals(this.snake.getPosition()))) {
-        this.gameOver = true;
-      }
+      setInterval(() => {
+        this.ctx.clearRect(0, 0, this.gameWindow.width, this.gameWindow.height);
+        this.snake.draw(this.ctx);
+        this.apple.render(this.ctx);
+      }, 1000 / 60);
     }
   
     updateScore() {
-      this.scoreTag.innerText = `${this.snake.getLength() - 1} ${this.gameOver ? "(GAME OVER!)" : ""}`;
+      this.scoreTag.innerText = `${this.snake.getLength() - 1} ${
+        !this.gameOver ? "" : "(GAME OVER!)"
+      }`;
     }
   
-    setupEventListeners() {
-      document.addEventListener("keydown", (e) => {
-        if (this.gameOver) return;
-  
-        const oldDirection = this.snake.direction;
-        let newDirection = -1;
-  
-        switch (e.key) {
-          case "ArrowDown":
-            newDirection = Direction.Down;
-            break;
-          case "ArrowUp":
-            newDirection = Direction.Up;
-            break;
-          case "ArrowLeft":
-            newDirection = Direction.Left;
-            break;
-          case "ArrowRight":
-            newDirection = Direction.Right;
-            break;
-          default:
-            return;
-        }
-  
-        if (oldDirection !== newDirection) {
-          const pos = this.snake.getNextPositionDir(newDirection);
-          if (!pos.equals(this.snake.getTail()[1])) {
-            this.snake.direction = newDirection;
-          }
-        }
-  
-        e.preventDefault();
-      });
+    checkWallCollision(position) {
+      const { gridSize } = GameConfig;
+      return (
+        position.getX() < 0 ||
+        position.getY() < 0 ||
+        position.getX() >= gridSize ||
+        position.getY() >= gridSize
+      );
     }
   }
   
   class Snake {
-    constructor() {
+    constructor(game) {
+      this.game = game;
       this.length = 0;
       this.position = new Position(0, 0);
       this.tailPositions = [];
@@ -100,29 +64,49 @@ const Direction = {
     }
   
     draw(ctx) {
+      const { tileSize } = GameConfig;
       this.tailPositions.forEach((pos, i) => {
         ctx.beginPath();
-        ctx.rect(pos.getX() * POSITION_SIZE, pos.getY() * POSITION_SIZE, POSITION_SIZE - 1, POSITION_SIZE - 1);
+        ctx.rect(pos.getX() * tileSize, pos.getY() * tileSize, tileSize - 1, tileSize - 1);
         ctx.fillStyle = i === 0 ? "brown" : "green";
         ctx.fill();
       });
     }
   
     move() {
-      this.position = this.getNextPositionDir(this.direction);
+      const nextPosition = this.getNextPositionDir(this.direction);
   
-      const temp = [this.position, ...this.tailPositions.slice(0, this.length)];
-      this.tailPositions = temp.slice(0, this.length + 1);
+      if (this.collideCheck(nextPosition)) {
+        this.game.gameOver = true;
+        this.game.updateScore();
+        return;
+      }
   
-      this.position = new Position(
-        (this.position.getX() + GRID_SIZE) % GRID_SIZE,
-        (this.position.getY() + GRID_SIZE) % GRID_SIZE
-      );
-      this.tailPositions[0] = this.position;
+      this.position = nextPosition;
+      this.tailPositions.unshift(this.position);
+  
+      if (this.tailPositions.length > this.length) {
+        this.tailPositions.pop();
+      }
+  
+      if (this.position.equals(this.game.apple.position)) {
+        this.grow();
+        this.game.apple.move();
+      }
     }
   
     grow() {
       this.length++;
+      this.game.updateScore();
+    }
+  
+    collideCheck(nextPosition) {
+      const { gridSize } = GameConfig;
+  
+      return (
+        this.game.checkWallCollision(nextPosition) ||
+        this.tailPositions.some((pos) => pos.equals(nextPosition))
+      );
     }
   
     getNextPositionDir(dir) {
@@ -152,29 +136,37 @@ const Direction = {
   }
   
   class Apple {
-    constructor() {
+    constructor(game) {
+      this.game = game;
       this.move();
     }
   
     render(ctx) {
+      const { tileSize } = GameConfig;
       ctx.beginPath();
-      ctx.rect(this.position.getX() * POSITION_SIZE, this.position.getY() * POSITION_SIZE, POSITION_SIZE, POSITION_SIZE);
+      ctx.rect(this.position.getX() * tileSize, this.position.getY() * tileSize, tileSize, tileSize);
       ctx.fillStyle = "red";
       ctx.fill();
     }
   
     move() {
-      this.position = new Position(
-        Math.floor(Math.random() * GRID_SIZE),
-        Math.floor(Math.random() * GRID_SIZE)
-      );
+      const { gridSize } = GameConfig;
+      let newPosition;
+      do {
+        newPosition = new Position(
+          Math.floor(Math.random() * gridSize),
+          Math.floor(Math.random() * gridSize)
+        );
+      } while (this.game.snake.tailPositions.some((pos) => pos.equals(newPosition)));
+  
+      this.position = newPosition;
     }
   }
   
   class Position {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
+    constructor(xPos, yPos) {
+      this.x = xPos;
+      this.y = yPos;
     }
   
     add(xAdd, yAdd) {
@@ -194,11 +186,40 @@ const Direction = {
     }
   }
   
-  // Constants
-  const GRID_SIZE = 30;
-  const POSITION_SIZE = 10;
+  document.addEventListener("keydown", (e) => {
+    if (!game) return;
   
-  // Create and start the game
-  const game = new Game();
-  game.start();
+    let oldDirection = game.snake.direction;
+    let newDirection = -1;
+  
+    switch (e.key) {
+      case "ArrowDown":
+        newDirection = Direction.Down;
+        break;
+      case "ArrowUp":
+        newDirection = Direction.Up;
+        break;
+      case "ArrowLeft":
+        newDirection = Direction.Left;
+        break;
+      case "ArrowRight":
+        newDirection = Direction.Right;
+        break;
+      default:
+        return;
+    }
+  
+    if (oldDirection !== newDirection) {
+      let pos = game.snake.getNextPositionDir(newDirection);
+      if (!pos.equals(game.snake.tailPositions[1])) {
+        game.snake.direction = newDirection;
+      }
+    }
+  
+    e.preventDefault();
+  });
+  
+  let game = new Game();
+  game.tick();
+  game.renderTick();
   
