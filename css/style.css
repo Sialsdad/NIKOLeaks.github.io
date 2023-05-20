@@ -5,6 +5,10 @@
   }
   
   body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: var(--font);
     background: radial-gradient(ellipse at bottom, var(--bgColor) 0%, var(--bgColor2) 100%);
     /* background-image: url('https://bit.ly/3nFVqJh'); */
     opacity: 0;
@@ -12,10 +16,7 @@
     animation-fill-mode: forwards;
     background-repeat: no-repeat;
     background-size: cover;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
+    position: relative;
   }
 
   a {
