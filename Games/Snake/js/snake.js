@@ -3,12 +3,12 @@ const Direction = {
     Down: 2,
     Left: 3,
     Right: 4
-}
+};
 
 class Game {
     constructor() {
-        this.snake = new Snake();
-        this.apple = new Apple();
+        this.snake = new Snake(this);
+        this.apple = new Apple(this);
         this.gameOver = false;
     }
 
@@ -24,14 +24,28 @@ class Game {
             ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
             this.snake.draw(ctx);
             this.apple.render(ctx);
+            if (this.gameOver) {
+                ctx.font = "30px Arial";
+                ctx.fillStyle = "red";
+                ctx.fillText("GAME OVER!", 100, 200);
+                ctx.font = "20px Arial";
+                ctx.fillStyle = "white";
+                ctx.fillText("Retry", 180, 240);
+            }
         }, 1000 / 30); // Increased interval to 30fps (33.33ms)
+    }
+
+    restart() {
+        this.snake = new Snake(this);
+        this.apple = new Apple(this);
+        this.gameOver = false;
     }
 }
 
 class Snake {
     constructor(game) {
         this.game = game;
-        this.lenght = 0;
+        this.length = 0;
         this.position = new Position(0, 0);
         this.tailPositions = [];
         this.direction = Direction.Right;
@@ -40,7 +54,7 @@ class Snake {
     draw(ctx) {
         this.tailPositions.forEach((pos, i) => {
             ctx.beginPath();
-            ctx.rect((pos.getX() * 10), (pos.getY() * 10), 9, 9);
+            ctx.rect(pos.getX() * 10, pos.getY() * 10, 9, 9);
             ctx.fillStyle = i == 0 ? "brown" : "green";
             ctx.fill();
         });
@@ -48,52 +62,54 @@ class Snake {
 
     move() {
         let nextPosition = this.getNextPositionDir(this.direction);
-    
-        if (this.collidesWithWall(nextPosition)) {
+
+        if (this.collidesWithWall(nextPosition) || this.collidesWithTail(nextPosition)) {
             game.gameOver = true;
-            updateScore();
             return;
         }
-    
+
         this.position = nextPosition;
-    
-        this.collideCheck();
-    
+
+        if (this.collidesWithApple()) {
+            this.grow();
+            game.apple.move();
+        }
+
         let temp = [];
         for (let x = 0; x < this.tailPositions.length; x++) temp[x + 1] = this.tailPositions[x];
         this.tailPositions = temp;
-    
+
         this.position = new Position((this.position.getX() + 30) % 30, (this.position.getY() + 30) % 30);
         this.tailPositions[0] = this.position;
-        this.tailPositions = this.tailPositions.filter((v, i) => i <= this.lenght);
+        this.tailPositions = this.tailPositions.filter((v, i) => i <= this.length);
     }
-    
+
     collidesWithWall(position) {
         return position.getX() < 0 || position.getY() < 0 || position.getX() >= 30 || position.getY() >= 30;
-    }    
-
-    grow() {
-        this.lenght++;
-        updateScore();
     }
 
-    collideCheck() {
-        if (this.position.equals(game.apple.position)) {
-            game.apple.onCollide(this);
-        }
+    collidesWithTail(position) {
+        return this.tailPositions.some((v) => v.equals(position));
+    }
 
-        if (this.tailPositions.some((v, i) => i != 0 && v.equals(this.position))) {
-            game.gameOver = true;
-            updateScore();
-        };
+    collidesWithApple() {
+        return this.position.equals(game.apple.position);
+    }
+
+    grow() {
+        this.length++;
     }
 
     getNextPositionDir(dir) {
         switch (dir) {
-            case Direction.Down: return this.position.add(0, 1);
-            case Direction.Up: return this.position.add(0, -1);
-            case Direction.Right: return this.position.add(1, 0);
-            case Direction.Left: return this.position.add(-1, 0);
+            case Direction.Down:
+                return this.position.add(0, 1);
+            case Direction.Up:
+                return this.position.add(0, -1);
+            case Direction.Right:
+                return this.position.add(1, 0);
+            case Direction.Left:
+                return this.position.add(-1, 0);
         }
     }
 
@@ -102,7 +118,7 @@ class Snake {
     }
 
     getLength() {
-        return this.lenght;
+        return this.length;
     }
 
     getTail() {
@@ -135,8 +151,8 @@ class Apple {
 
 class Position {
     constructor(xPos, yPos) {
-        this.x = xPos
-        this.y = yPos
+        this.x = xPos;
+        this.y = yPos;
     }
 
     add(xAdd, yAdd) {
@@ -158,7 +174,7 @@ class Position {
 
 let updateScore = () => {
     scoreTag.innerText = `${game.snake.getLength() - 1} ${!game.gameOver ? "" : "(GAME OVER!)"}`;
-}
+};
 
 document.addEventListener("keydown", (e) => {
     if (!game) return;
@@ -200,3 +216,10 @@ let ctx = gameWindow.getContext("2d");
 let game = new Game();
 game.tick();
 game.renderTick();
+
+gameWindow.addEventListener("click", () => {
+    if (game.gameOver) {
+        game.restart();
+        updateScore();
+    }
+});
