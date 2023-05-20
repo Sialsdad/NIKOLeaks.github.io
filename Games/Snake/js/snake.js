@@ -16,7 +16,7 @@ class Game {
         setInterval(() => {
             if (this.gameOver) return;
             this.snake.move();
-        }, 90);
+        }, 150); // Increased interval to 150ms
     }
 
     renderTick() {
@@ -24,7 +24,7 @@ class Game {
             ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
             this.snake.draw(ctx);
             this.apple.render(ctx);
-        }, 1000 / 60);
+        }, 1000 / 30); // Increased interval to 30fps (33.33ms)
     }
 }
 
