@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+
+body {
+    height: 100vh;
+}
+
+.score {
+    position: sticky;
+    top: 0;
+    display: flex;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.score h1, .score h2 {
+    color:white;
+    font-size: 2rem;
+}
+
+canvas {
+    display: block;
+    background-color: gray;
+    width: 600px;
+    height: 600px;
+    margin: 30px auto 0 auto;
+}
