@@ -3,188 +3,202 @@ const Direction = {
     Down: 2,
     Left: 3,
     Right: 4
-}
-
-class Game {
+  };
+  
+  class Game {
     constructor() {
-        this.snake = new Snake();
-        this.apple = new Apple();
-        this.gameOver = false;
+      this.snake = new Snake();
+      this.apple = new Apple();
+      this.gameOver = false;
+      this.canvas = document.getElementById("game-window");
+      this.context = this.canvas.getContext("2d");
+      this.scoreTag = document.getElementById("score");
     }
-
+  
+    start() {
+      this.tick();
+      this.renderTick();
+      this.setupEventListeners();
+    }
+  
     tick() {
-        setInterval(() => {
-            if (this.gameOver) return;
-            this.snake.move();
-        }, 90);
+      if (this.gameOver) return;
+      this.snake.move();
+      this.checkCollision();
+      this.updateScore();
+      setTimeout(() => this.tick(), 90);
     }
-
+  
     renderTick() {
-        setInterval(() => {
-            ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
-            this.snake.draw(ctx);
-            this.apple.render(ctx);
-        }, 1000 / 60);
+      this.clearCanvas();
+      this.snake.draw(this.context);
+      this.apple.render(this.context);
+      requestAnimationFrame(() => this.renderTick());
     }
-}
-
-class Snake {
-    constructor(game) {
-        this.game = game;
-        this.lenght = 0;
-        this.position = new Position(0, 0);
-        this.tailPositions = [];
-        this.direction = Direction.Right;
+  
+    clearCanvas() {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-
-    draw(ctx) {
-        this.tailPositions.forEach((pos, i) => {
-            ctx.beginPath();
-            ctx.rect((pos.getX() * 10), (pos.getY() * 10), 9, 9);
-            ctx.fillStyle = i == 0 ? "brown" : "green";
-            ctx.fill();
-        });
+  
+    checkCollision() {
+      if (this.snake.getPosition().equals(this.apple.position)) {
+        this.snake.grow();
+        this.apple.move();
+      }
+  
+      if (this.snake.getTail().some((pos, i) => i !== 0 && pos.equals(this.snake.getPosition()))) {
+        this.gameOver = true;
+      }
     }
-
-    move() {
-        this.position = this.getNextPositionDir(this.direction);
-
-        this.collideCheck();
-
-        let temp = [];
-        for (let x = 0; x < this.tailPositions.length; x++)temp[x + 1] = this.tailPositions[x];
-        this.tailPositions = temp;
-
-        this.position = new Position((this.position.getX() + 30) % 30, (this.position.getY() + 30) % 30);
-        this.tailPositions[0] = this.position;
-        this.tailPositions = this.tailPositions.filter((v, i) => i <= this.lenght);
+  
+    updateScore() {
+      this.scoreTag.innerText = `${this.snake.getLength() - 1} ${this.gameOver ? "(GAME OVER!)" : ""}`;
     }
-
-    grow() {
-        this.lenght++;
-        updateScore();
-    }
-
-    collideCheck() {
-        if (this.position.equals(game.apple.position)) {
-            game.apple.onCollide(this);
-        }
-
-        if (this.tailPositions.some((v, i) => i != 0 && v.equals(this.position))) {
-            game.gameOver = true;
-            updateScore();
-        };
-    }
-
-    getNextPositionDir(dir) {
-        switch (dir) {
-            case Direction.Down: return this.position.add(0, 1);
-            case Direction.Up: return this.position.add(0, -1);
-            case Direction.Right: return this.position.add(1, 0);
-            case Direction.Left: return this.position.add(-1, 0);
-        }
-    }
-
-    getPosition() {
-        return this.position;
-    }
-
-    getLength() {
-        return this.lenght;
-    }
-
-    getTail() {
-        return this.tailPositions;
-    }
-}
-
-class Apple {
-    constructor(game) {
-        this.game = game;
-        this.move();
-    }
-
-    render(ctx) {
-        ctx.beginPath();
-        ctx.rect(this.position.getX() * 10, this.position.getY() * 10, 10, 10);
-        ctx.fillStyle = "red";
-        ctx.fill();
-    }
-
-    move() {
-        this.position = new Position(Math.floor(Math.random() * 30), Math.floor(Math.random() * 30));
-    }
-
-    onCollide(snake) {
-        snake.grow();
-        this.move();
-    }
-}
-
-class Position {
-    constructor(xPos, yPos) {
-        this.x = xPos
-        this.y = yPos
-    }
-
-    add(xAdd, yAdd) {
-        return new Position(this.x + xAdd, this.y + yAdd);
-    }
-
-    getX() {
-        return this.x;
-    }
-
-    getY() {
-        return this.y;
-    }
-
-    equals(pos) {
-        return pos && this.x == pos.getX() && this.y == pos.getY();
-    }
-}
-
-let updateScore = () => {
-    scoreTag.innerText = `${game.snake.getLength() - 1} ${!game.gameOver ? "" : "(GAME OVER!)"}`;
-}
-
-document.addEventListener("keydown", (e) => {
-    if (!game) return;
-
-    let oldDirection = game.snake.direction;
-    let newDirection = -1;
-
-    switch (e.key) {
-        case "ArrowDown":
+  
+    setupEventListeners() {
+      document.addEventListener("keydown", (e) => {
+        if (this.gameOver) return;
+  
+        const oldDirection = this.snake.direction;
+        let newDirection = -1;
+  
+        switch (e.key) {
+          case "ArrowDown":
             newDirection = Direction.Down;
             break;
-        case "ArrowUp":
+          case "ArrowUp":
             newDirection = Direction.Up;
             break;
-        case "ArrowLeft":
+          case "ArrowLeft":
             newDirection = Direction.Left;
             break;
-        case "ArrowRight":
+          case "ArrowRight":
             newDirection = Direction.Right;
             break;
-        default:
+          default:
             return;
-    }
-
-    if (oldDirection != newDirection) {
-        let pos = game.snake.getNextPositionDir(newDirection);
-        if (!pos.equals(game.snake.tailPositions[1])) {
-            game.snake.direction = newDirection;
         }
+  
+        if (oldDirection !== newDirection) {
+          const pos = this.snake.getNextPositionDir(newDirection);
+          if (!pos.equals(this.snake.getTail()[1])) {
+            this.snake.direction = newDirection;
+          }
+        }
+  
+        e.preventDefault();
+      });
     }
-
-    e.preventDefault();
-});
-
-let scoreTag = document.getElementById("score");
-let gameWindow = document.getElementById("game-window");
-let ctx = gameWindow.getContext("2d");
-
-let game = new Game();
-game.tick();
-game.renderTick();
+  }
+  
+  class Snake {
+    constructor() {
+      this.length = 0;
+      this.position = new Position(0, 0);
+      this.tailPositions = [];
+      this.direction = Direction.Right;
+    }
+  
+    draw(ctx) {
+      this.tailPositions.forEach((pos, i) => {
+        ctx.beginPath();
+        ctx.rect(pos.getX() * POSITION_SIZE, pos.getY() * POSITION_SIZE, POSITION_SIZE - 1, POSITION_SIZE - 1);
+        ctx.fillStyle = i === 0 ? "brown" : "green";
+        ctx.fill();
+      });
+    }
+  
+    move() {
+      this.position = this.getNextPositionDir(this.direction);
+  
+      const temp = [this.position, ...this.tailPositions.slice(0, this.length)];
+      this.tailPositions = temp.slice(0, this.length + 1);
+  
+      this.position = new Position(
+        (this.position.getX() + GRID_SIZE) % GRID_SIZE,
+        (this.position.getY() + GRID_SIZE) % GRID_SIZE
+      );
+      this.tailPositions[0] = this.position;
+    }
+  
+    grow() {
+      this.length++;
+    }
+  
+    getNextPositionDir(dir) {
+      switch (dir) {
+        case Direction.Down:
+          return this.position.add(0, 1);
+        case Direction.Up:
+          return this.position.add(0, -1);
+        case Direction.Right:
+          return this.position.add(1, 0);
+        case Direction.Left:
+          return this.position.add(-1, 0);
+      }
+    }
+  
+    getPosition() {
+      return this.position;
+    }
+  
+    getLength() {
+      return this.length;
+    }
+  
+    getTail() {
+      return this.tailPositions;
+    }
+  }
+  
+  class Apple {
+    constructor() {
+      this.move();
+    }
+  
+    render(ctx) {
+      ctx.beginPath();
+      ctx.rect(this.position.getX() * POSITION_SIZE, this.position.getY() * POSITION_SIZE, POSITION_SIZE, POSITION_SIZE);
+      ctx.fillStyle = "red";
+      ctx.fill();
+    }
+  
+    move() {
+      this.position = new Position(
+        Math.floor(Math.random() * GRID_SIZE),
+        Math.floor(Math.random() * GRID_SIZE)
+      );
+    }
+  }
+  
+  class Position {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  
+    add(xAdd, yAdd) {
+      return new Position(this.x + xAdd, this.y + yAdd);
+    }
+  
+    getX() {
+      return this.x;
+    }
+  
+    getY() {
+      return this.y;
+    }
+  
+    equals(pos) {
+      return pos && this.x === pos.getX() && this.y === pos.getY();
+    }
+  }
+  
+  // Constants
+  const GRID_SIZE = 30;
+  const POSITION_SIZE = 10;
+  
+  // Create and start the game
+  const game = new Game();
+  game.start();
+  
