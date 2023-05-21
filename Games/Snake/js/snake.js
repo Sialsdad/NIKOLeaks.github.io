@@ -10,13 +10,15 @@ const Direction = {
       this.snake = new Snake(this);
       this.apple = new Apple(this);
       this.gameOver = false;
+      this.score = 0;
+      this.scoreTag = document.getElementById("score"); // Get the score element
     }
   
     tick() {
       setInterval(() => {
         if (this.gameOver) return;
         this.snake.move();
-      }, 150); // Increased interval to 150ms
+      }, 150);
     }
   
     renderTick() {
@@ -28,13 +30,24 @@ const Direction = {
         if (this.gameOver) {
           drawGameOverText();
         }
-      }, 1000 / 30); // Increased interval to 30fps (33.33ms)
+      }, 1000 / 30);
     }
   
     restart() {
       this.snake = new Snake(this);
       this.apple = new Apple(this);
       this.gameOver = false;
+      this.score = 0;
+      this.updateScore(); // Update the score display when the game restarts
+    }
+  
+    increaseScore() {
+      this.score++;
+      this.updateScore(); // Update the score display when the score increases
+    }
+  
+    updateScore() {
+      this.scoreTag.textContent = this.score; // Update the score display with the game's score
     }
   }
   
@@ -67,9 +80,11 @@ const Direction = {
   
       this.position = nextPosition;
   
+
       if (this.collidesWithApple()) {
         this.grow();
         game.apple.move();
+        game.increaseScore(); // Call the increaseScore method when colliding with an apple
       }
   
       const temp = [null, ...this.tailPositions];
@@ -162,6 +177,10 @@ const Direction = {
     }
   }
   
+  const updateScore = () => {
+    game.scoreTag.textContent = game.score; // Update the score display with the game's score
+  };
+  
   const drawGameOverText = () => {
     const { width } = gameWindow;
     ctx.font = "30px Arial";
@@ -205,18 +224,23 @@ const Direction = {
     e.preventDefault();
   });
   
-  const scoreTag = document.getElementById("score");
   const gameWindow = document.getElementById("game-window");
   const ctx = gameWindow.getContext("2d");
   
-  const game = new Game();
-  game.tick();
-  game.renderTick();
+  let game = null;
   
   gameWindow.addEventListener("click", () => {
-    if (game.gameOver) {
+    if (game && game.gameOver) {
       game.restart();
       updateScore();
     }
   });
   
+  function initializeGame() {
+    game = new Game();
+    game.tick();
+    game.renderTick();
+    updateScore();
+  }
+  
+  initializeGame();
