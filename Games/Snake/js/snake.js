@@ -21,16 +21,12 @@ const Direction = {
   
     renderTick() {
       setInterval(() => {
-        ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
+        const { width, height } = gameWindow;
+        ctx.clearRect(0, 0, width, height);
         this.snake.draw(ctx);
         this.apple.render(ctx);
         if (this.gameOver) {
-          ctx.font = "30px Arial";
-          ctx.fillStyle = "red";
-          ctx.fillText("GAME OVER!", 100, 200);
-          ctx.font = "20px Arial";
-          ctx.fillStyle = "white";
-          ctx.fillText("Retry", 180, 240);
+          drawGameOverText();
         }
       }, 1000 / 30); // Increased interval to 30fps (33.33ms)
     }
@@ -53,8 +49,9 @@ const Direction = {
   
     draw(ctx) {
       this.tailPositions.forEach((pos, i) => {
+        const { x, y } = pos;
         ctx.beginPath();
-        ctx.rect(pos.getX() * 10, pos.getY() * 10, 9, 9);
+        ctx.rect(x * 10, y * 10, 9, 9);
         ctx.fillStyle = i === 0 ? "brown" : "green";
         ctx.fill();
       });
@@ -78,12 +75,13 @@ const Direction = {
       const temp = [null, ...this.tailPositions];
       this.tailPositions = temp.slice(0, this.length + 1);
   
-      this.position = new Position((this.position.getX() + 30) % 30, (this.position.getY() + 30) % 30);
+      this.position = new Position((this.position.x + 30) % 30, (this.position.y + 30) % 30);
       this.tailPositions[0] = this.position;
     }
   
     collidesWithWall(position) {
-      return position.getX() < 0 || position.getY() < 0 || position.getX() >= 30 || position.getY() >= 30;
+      const { x, y } = position;
+      return x < 0 || y < 0 || x >= 30 || y >= 30;
     }
   
     collidesWithTail(position) {
@@ -99,15 +97,16 @@ const Direction = {
     }
   
     getNextPositionDir(dir) {
+      const { x, y } = this.position;
       switch (dir) {
         case Direction.Down:
-          return this.position.add(0, 1);
+          return new Position(x, y + 1);
         case Direction.Up:
-          return this.position.add(0, -1);
+          return new Position(x, y - 1);
         case Direction.Right:
-          return this.position.add(1, 0);
+          return new Position(x + 1, y);
         case Direction.Left:
-          return this.position.add(-1, 0);
+          return new Position(x - 1, y);
       }
     }
   
@@ -131,8 +130,9 @@ const Direction = {
     }
   
     render(ctx) {
+      const { x, y } = this.position;
       ctx.beginPath();
-      ctx.rect(this.position.getX() * 10, this.position.getY() * 10, 10, 10);
+      ctx.rect(x * 10, y * 10, 10, 10);
       ctx.fillStyle = "red";
       ctx.fill();
     }
@@ -148,30 +148,28 @@ const Direction = {
   }
   
   class Position {
-    constructor(xPos, yPos) {
-      this.x = xPos;
-      this.y = yPos;
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
     }
   
     add(xAdd, yAdd) {
       return new Position(this.x + xAdd, this.y + yAdd);
     }
   
-    getX() {
-      return this.x;
-    }
-  
-    getY() {
-      return this.y;
-    }
-  
     equals(pos) {
-      return pos && this.x === pos.getX() && this.y === pos.getY();
+      return pos && this.x === pos.x && this.y === pos.y;
     }
   }
   
-  const updateScore = () => {
-    scoreTag.innerText = `${game.snake.getLength() - 1} ${!game.gameOver ? "" : "(GAME OVER!)"}`;
+  const drawGameOverText = () => {
+    const { width } = gameWindow;
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "red";
+    ctx.fillText("GAME OVER!", width / 2 - 100, 200);
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText("Retry", width / 2 - 20, 240);
   };
   
   document.addEventListener("keydown", (e) => {
