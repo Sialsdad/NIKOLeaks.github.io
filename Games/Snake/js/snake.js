@@ -1,4 +1,3 @@
-// Constants for direction
 const Direction = {
     Up: 1,
     Down: 2,
@@ -11,57 +10,6 @@ const Direction = {
       this.snake = new Snake(this);
       this.apple = new Apple(this);
       this.gameOver = false;
-      this.scoreElement = document.getElementById("score");
-      this.gameWindow = document.getElementById("game-window");
-      this.context = this.gameWindow.getContext("2d");
-      this.registerEventListeners();
-      this.tick();
-      this.renderTick();
-    }
-  
-    registerEventListeners() {
-      document.addEventListener("keydown", this.handleKeyDown.bind(this));
-      this.gameWindow.addEventListener("click", this.handleGameWindowClick.bind(this));
-    }
-  
-    handleKeyDown(event) {
-      if (this.gameOver) return;
-  
-      const oldDirection = this.snake.direction;
-      let newDirection = -1;
-  
-      switch (event.key) {
-        case "ArrowDown":
-          newDirection = Direction.Down;
-          break;
-        case "ArrowUp":
-          newDirection = Direction.Up;
-          break;
-        case "ArrowLeft":
-          newDirection = Direction.Left;
-          break;
-        case "ArrowRight":
-          newDirection = Direction.Right;
-          break;
-        default:
-          return;
-      }
-  
-      if (oldDirection !== newDirection) {
-        const nextPosition = this.snake.getNextPositionDir(newDirection);
-        if (!nextPosition.equals(this.snake.tailPositions[1])) {
-          this.snake.direction = newDirection;
-        }
-      }
-  
-      event.preventDefault();
-    }
-  
-    handleGameWindowClick() {
-      if (this.gameOver) {
-        this.restart();
-        this.updateScore();
-      }
     }
   
     tick() {
@@ -73,37 +21,24 @@ const Direction = {
   
     renderTick() {
       setInterval(() => {
-        this.clearCanvas();
-        this.snake.draw();
-        this.apple.render();
+        ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
+        this.snake.draw(ctx);
+        this.apple.render(ctx);
         if (this.gameOver) {
-          this.drawGameOver();
+          ctx.font = "30px Arial";
+          ctx.fillStyle = "red";
+          ctx.fillText("GAME OVER!", 100, 200);
+          ctx.font = "20px Arial";
+          ctx.fillStyle = "white";
+          ctx.fillText("Retry", 180, 240);
         }
       }, 1000 / 30); // Increased interval to 30fps (33.33ms)
-    }
-  
-    clearCanvas() {
-      this.context.clearRect(0, 0, this.gameWindow.width, this.gameWindow.height);
-    }
-  
-    drawGameOver() {
-      const ctx = this.context;
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "red";
-      ctx.fillText("GAME OVER!", 100, 200);
-      ctx.font = "20px Arial";
-      ctx.fillStyle = "white";
-      ctx.fillText("Retry", 180, 240);
     }
   
     restart() {
       this.snake = new Snake(this);
       this.apple = new Apple(this);
       this.gameOver = false;
-    }
-  
-    updateScore() {
-      this.scoreElement.innerText = `${this.snake.getLength() - 1} ${!this.gameOver ? "" : "(GAME OVER!)"}`;
     }
   }
   
@@ -116,8 +51,7 @@ const Direction = {
       this.direction = Direction.Right;
     }
   
-    draw() {
-      const ctx = this.game.context;
+    draw(ctx) {
       this.tailPositions.forEach((pos, i) => {
         ctx.beginPath();
         ctx.rect(pos.getX() * 10, pos.getY() * 10, 9, 9);
@@ -130,7 +64,7 @@ const Direction = {
       const nextPosition = this.getNextPositionDir(this.direction);
   
       if (this.collidesWithWall(nextPosition) || this.collidesWithTail(nextPosition)) {
-        this.game.gameOver = true;
+        game.gameOver = true;
         return;
       }
   
@@ -138,18 +72,14 @@ const Direction = {
   
       if (this.collidesWithApple()) {
         this.grow();
-        this.game.apple.move();
+        game.apple.move();
       }
   
-      const temp = [];
-      for (let x = 0; x < this.tailPositions.length; x++) {
-        temp[x + 1] = this.tailPositions[x];
-      }
-      this.tailPositions = temp;
+      const temp = [null, ...this.tailPositions];
+      this.tailPositions = temp.slice(0, this.length + 1);
   
       this.position = new Position((this.position.getX() + 30) % 30, (this.position.getY() + 30) % 30);
       this.tailPositions[0] = this.position;
-      this.tailPositions = this.tailPositions.filter((v, i) => i <= this.length);
     }
   
     collidesWithWall(position) {
@@ -161,7 +91,7 @@ const Direction = {
     }
   
     collidesWithApple() {
-      return this.position.equals(this.game.apple.position);
+      return this.position.equals(game.apple.position);
     }
   
     grow() {
@@ -200,8 +130,7 @@ const Direction = {
       this.move();
     }
   
-    render() {
-      const ctx = this.game.context;
+    render(ctx) {
       ctx.beginPath();
       ctx.rect(this.position.getX() * 10, this.position.getY() * 10, 10, 10);
       ctx.fillStyle = "red";
@@ -241,6 +170,55 @@ const Direction = {
     }
   }
   
-  // Create a new instance of the Game class
+  const updateScore = () => {
+    scoreTag.innerText = `${game.snake.getLength() - 1} ${!game.gameOver ? "" : "(GAME OVER!)"}`;
+  };
+  
+  document.addEventListener("keydown", (e) => {
+    if (!game) return;
+  
+    const oldDirection = game.snake.direction;
+    let newDirection = -1;
+  
+    switch (e.key) {
+      case "ArrowDown":
+        newDirection = Direction.Down;
+        break;
+      case "ArrowUp":
+        newDirection = Direction.Up;
+        break;
+      case "ArrowLeft":
+        newDirection = Direction.Left;
+        break;
+      case "ArrowRight":
+        newDirection = Direction.Right;
+        break;
+      default:
+        return;
+    }
+  
+    if (oldDirection !== newDirection) {
+      const pos = game.snake.getNextPositionDir(newDirection);
+      if (!pos.equals(game.snake.tailPositions[1])) {
+        game.snake.direction = newDirection;
+      }
+    }
+  
+    e.preventDefault();
+  });
+  
+  const scoreTag = document.getElementById("score");
+  const gameWindow = document.getElementById("game-window");
+  const ctx = gameWindow.getContext("2d");
+  
   const game = new Game();
+  game.tick();
+  game.renderTick();
+  
+  gameWindow.addEventListener("click", () => {
+    if (game.gameOver) {
+      game.restart();
+      updateScore();
+    }
+  });
   
