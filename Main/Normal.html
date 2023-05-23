@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKOLeaks</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Normal Mods</h1>
+        <button class="btn" onclick="window.location.href='../index.html'">Go To Home</button>
+        <button class="btn" onclick="window.location.href='https://discord.gg/nikoloader'">Discord</button>
+      </header>
+      <main>
+        <table>
+          <thead>
+            <tr>
+              <th>Menu Name</th>
+              <th>Menu Version</th>
+              <th>Download</th>
+              <th>Discord</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fish Leg</td>
+              <td>V1.0</td>
+              <td><a href="https://github.com/ZenonGTAG/FishLegMod/releases/tag/release" target="_blank" id="fishleg-download-link">Loading...</a></td>
+              <td><a href="https://discord.gg/mfWy4ME4nr" target="_blank">Discord</a></td>
+            </tr>
+            <tr>
+              <td>First Person Camera</td>
+              <td>V1.0</td>
+              <td><a href="https://github.com/ZenonGTAG/FirstPersonCamera/releases/tag/release" target="_blank" id="fpc-download-link">Loading...</a></td>
+              <td><a href="https://discord.gg/mfWy4ME4nr" target="_blank">Discord</a></td>
+            </tr>
+            <tr>
+              <td>Monke Soundboard</td>
+              <td>V1.0</td>
+              <td><a href="https://github.com/ZenonGTAG/MonkeSoundboard/releases/tag/release" target="_blank" id="monke-download-link">Loading...</a></td>
+              <td><a href="https://discord.gg/mfWy4ME4nr" target="_blank">Discord</a></td>
+            </tr>
+            <tr>
+              <td>Helicopter Monke</td>
+              <td>V1.0</td>
+              <td><a href="https://github.com/ZenonGTAG/HelicopterMonke/releases/tag/release" target="_blank" id="helicopter-download-link">Loading...</a></td>
+              <td><a href="https://discord.gg/mfWy4ME4nr" target="_blank">Discord</a></td>
+            </tr>
+            <tr>
+              <td>Sticky Cosmetics</td>
+              <td>V1.0</td>
+              <td><a href="https://github.com/NIKOLeaks/Sticky-Cosmetics/releases/tag/v1" target="_blank" id="sticky-cosmetics-helicopter-download-link">Loading...</a></td>
+              <td><a href="idk_blank" target="_blank">Discord</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </main>
+      <footer>
+      </footer>
+    </div>
+    <script>
+      const fishlegDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/FishLegMod/releases/latest';
+      const fpcDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/FirstPersonCamera/releases/latest';
+      const monkeDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/MonkeSoundboard/releases/latest';
+      const helicopterDownloadUrl = 'https://api.github.com/repos/ZenonGTAG/HelicopterMonke/releases/latest';
+      const stickyCosmeticsDownloadUrl = 'https://api.github.com/repos/NIKOLeaks/Sticky-Cosmetics/releases/latest';
+
+      async function fetchDownloadCount(downloadUrl, downloadLinkId) {
+        try {
+          const response = await fetch(downloadUrl);
+          const data = await response.json();
+          const downloadCount = data.assets[0].download_count;
+          const downloadLink = document.getElementById(downloadLinkId);
+          downloadLink.innerText = `${downloadCount} Downloads`;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      fetchDownloadCount(fishlegDownloadUrl, 'fishleg-download-link');
+      fetchDownloadCount(fpcDownloadUrl, 'fpc-download-link');
+      fetchDownloadCount(monkeDownloadUrl, 'monke-download-link');
+      fetchDownloadCount(helicopterDownloadUrl, 'helicopter-download-link');
+      fetchDownloadCount(stickyCosmeticsDownloadUrl, 'sticky-cosmetics-helicopter-download-link');
+    </script>
+  </body>
+</html>
