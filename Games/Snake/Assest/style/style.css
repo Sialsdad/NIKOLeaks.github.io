@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+*, *::before , *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Source Sans Pro';
+  font-size: 14px;
+}
+
+.top img {
+  width: 48px;
+}
+
+.top {
+  width: 100%;
+  background-color: #40739e;
+  padding: 14.3px;
+  display: flex;
+  align-items: center;
+}
+
+.main-game {
+  width: 100%;
+  height: 88.5vh;
+  background-color: #192a56;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score {
+  font-size: 2rem;
+  margin-left: 20px;
+}
