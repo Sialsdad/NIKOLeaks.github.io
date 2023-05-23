@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Assest/Style/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Rock, Paper, Scissors</title>
+</head>
+<body>
+  <div class="main">
+    <div class="contianer">
+      <div class="head">
+        <h2>Round <span id="round-counter">1</span></h2>
+      </div>
+      <div class="counter">
+        <div class="win">
+          <p>WIN</p>
+          <span id="win">0</span>
+        </div>
+        <div class="draw">
+          <p>TIES</p>
+          <span id="draw">0</span>
+        </div>
+        <div class="lose">
+          <p>WIN</p>
+          <span id="lose">0</span>
+        </div>
+      </div>
+
+      <div class="game-section">
+        <div class="we-choice">
+          <img src="Assest/Images/Rock.png" alt="rock">
+          <div class="we-choice-content">
+            <span id="rock"><i class="fas fa-hand-rock"></i></span>
+            <span id="paper"><i class="fas fa-hand-paper"></i></span>
+            <span id="scissors"><i class="fas fa-hand-scissors"></i></span>
+          </div>
+        </div>
+
+        <div class="middle">
+          <h1>ROUNDS</h1>
+          <div class="counter-rounds"></div>
+          <h2>RESULT</h2>
+          <div class="winner"></div>
+        </div>
+
+        <div class="bot-choice">
+          <img src="Assest/Images/comp-Rock.png" alt="rock">
+          <div class="bot-choice-content">
+            <p>Bot Choice</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounds-responsive">
+        <div class="choice we-choice-content">
+          <span id="rock2"><i class="fas fa-hand-rock"></i></span>
+          <span id="paper2"><i class="fas fa-hand-paper"></i></span>
+          <span id="scissors2"><i class="fas fa-hand-scissors"></i></span>
+        </div>
+
+        <div class="middle2">
+          <h1>ROUNDS</h1>
+          <div class="counter-rounds2"></div>
+          <h2>RESULT</h2>
+          <div class="winner2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="JS/main.js"></script>
+</body>
+</html>
