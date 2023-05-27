@@ -97,25 +97,6 @@ function accident(head, array) {
   return false;
 }
 
-function restart() {
-  clearInterval(game);
-  snake = [];
-  direction = null;
-  score = 0;
-
-  snake[0] = {
-    x: Math.floor(maxWidth / 2 / 32) * box,
-    y: Math.floor(maxHeight / 2 / 32) * box,
-  };
-
-  food = {
-    x: Math.floor(Math.random() * (maxWidth / 32)) * box,
-    y: Math.floor(Math.random() * (maxHeight / 32)) * box,
-  };
-
-  game = setInterval(draw, 100);
-}
-
 function draw() {
   groundDraw();
   scoreSpan.innerHTML = score;
@@ -171,11 +152,31 @@ function draw() {
     accident(newHead, snake)
   ) {
     clearInterval(game);
-    alert("Game over!");
-    restart();
+    restartGame();
   }
 
   snake.unshift(newHead);
+}
+
+function restartGame() {
+  // Reset all variables
+  direction = undefined;
+  snake = [];
+  score = 0;
+
+  // Re-initialize snake and food positions
+  snake[0] = {
+    x: Math.floor(maxWidth / 2 / 32) * box,
+    y: Math.floor(maxHeight / 2 / 32) * box,
+  };
+
+  food = {
+    x: Math.floor(Math.random() * (maxWidth / 32)) * box,
+    y: Math.floor(Math.random() * (maxHeight / 32)) * box,
+  };
+
+  // Restart the game loop
+  game = setInterval(draw, 100);
 }
 
 let game = setInterval(draw, 100);
