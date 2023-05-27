@@ -47,22 +47,22 @@ let food = {
 canvas.setAttribute("width", maxWidth);
 canvas.setAttribute("height", maxHeight);
 
-function groundDraw() {
-  let y = 0;
-  let rowColor = 0;
-  while (y <= maxHeight) {
-    for (let i = 0; i <= maxWidth - 32; i++) {
-      if (rowColor % 2 == 0) {
-        ctx.fillStyle = i % 2 == 0 ? "#273c75" : "#40739e";
-        ctx.fillRect(i * 32, y, box, box);
-      } else {
-        ctx.fillStyle = i % 2 == 0 ? "#40739e" : "#273c75";
-        ctx.fillRect(i * 32, y, box, box);
-      }
-    }
-    rowColor += 1;
-    y += 1 * 32;
-  }
+function restartGame() {
+  // Reset the variables to their initial values
+  direction = null;
+  snake = [];
+  score = 0;
+  snake[0] = {
+    x: Math.floor(maxWidth / 2 / 32) * box,
+    y: Math.floor(maxHeight / 2 / 32) * box,
+  };
+  food = {
+    x: Math.floor(Math.random() * (maxWidth / 32)) * box,
+    y: Math.floor(Math.random() * (maxHeight / 32)) * box,
+  };
+
+  clearInterval(game); // Clear the current game interval
+  game = setInterval(draw, 100); // Start a new game interval
 }
 
 document.addEventListener("keydown", (e) => {
@@ -74,6 +74,9 @@ document.addEventListener("keydown", (e) => {
     direction = "RIGHT";
   } else if (e.keyCode === 40 && direction !== "UP") {
     direction = "DOWN";
+  } else if (e.keyCode === 13) {
+    // Restart the game when Enter key is pressed
+    restartGame();
   }
 });
 
@@ -152,31 +155,10 @@ function draw() {
     accident(newHead, snake)
   ) {
     clearInterval(game);
-    restartGame();
+    alert("Game Over. Press Enter to restart."); // Show an alert message
   }
 
   snake.unshift(newHead);
-}
-
-function restartGame() {
-  // Reset all variables
-  direction = undefined;
-  snake = [];
-  score = 0;
-
-  // Re-initialize snake and food positions
-  snake[0] = {
-    x: Math.floor(maxWidth / 2 / 32) * box,
-    y: Math.floor(maxHeight / 2 / 32) * box,
-  };
-
-  food = {
-    x: Math.floor(Math.random() * (maxWidth / 32)) * box,
-    y: Math.floor(Math.random() * (maxHeight / 32)) * box,
-  };
-
-  // Restart the game loop
-  game = setInterval(draw, 100);
 }
 
 let game = setInterval(draw, 100);
