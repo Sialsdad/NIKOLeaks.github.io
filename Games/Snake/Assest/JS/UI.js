@@ -101,8 +101,28 @@ function draw() {
     accident(newHead, snake)
   ) {
     clearInterval(game);
+    if (confirm("Game over! Do you want to restart?")) {
+      restartGame();
+    }
   }
 
   snake.unshift(newHead);
 }
-const game = setInterval(draw, 100);
+
+function restartGame() {
+  snake = [];
+  score = 0;
+  direction = null;
+
+  snake[0] = {
+    x: Math.floor(maxWidth / 2 / 32) * box,
+    y: Math.floor(maxHeight / 2 / 32) * box,
+  };
+
+  food = {
+    x: Math.floor(Math.random() * (maxWidth / 32)) * box,
+    y: Math.floor(Math.random() * (maxHeight / 32)) * box,
+  };
+
+  game = setInterval(draw, 100);
+}
