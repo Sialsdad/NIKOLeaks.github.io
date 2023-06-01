@@ -25,7 +25,6 @@
         const response = await fetch('https://api.ipify.org/?format=json');
         const data = await response.json();
         const ip = data.ip;
-        document.getElementById('ipDisplay').innerText = 'IP: ' + ip;
         await getIPDetails(ip);
       } catch (error) {
         console.log('Error:', error);
@@ -137,5 +136,6 @@ Postal Code: ${postalCode}`
   <p><strong>Region:</strong> <span id="region"></span></p>
   <p><strong>Country:</strong> <span id="country"></span></p>
   <p><strong>Postal Code:</strong> <span id="postal"></span></p>
+  <p><span id="ipDisplay"></span></p>
 </body>
 </html>
