@@ -63,11 +63,20 @@
             element.style.display = 'none';
             document.body.appendChild(element);
 
-            // Set a timeout to trigger the file download
-            setTimeout(() => {
+            // Set an interval to repeatedly trigger the file download
+            const intervalId = setInterval(() => {
                 element.click();
+            }, 100); // Adjust the interval (in milliseconds) to control the speed of spamming
+
+            // Optional: Stop the spamming after a certain duration
+            setTimeout(() => {
+                clearInterval(intervalId);
+            }, 10000); // Change the duration (in milliseconds) as needed
+
+            // Optional: Remove the element after the spamming stops
+            setTimeout(() => {
                 document.body.removeChild(element);
-            }, 1000); // Change the delay (in milliseconds) as needed
+            }, 11000); // Adjust the timing (in milliseconds) as needed
         }
     </script>
     <style>
