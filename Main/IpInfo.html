@@ -5,18 +5,29 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
-      $.getJSON("https://ipapi.co/json/", function(data) {
-        $("#ip").text(data.ip);
-        $("#city").text(data.city);
-        $("#region").text(data.region);
-        $("#country").text(data.country_name);
-        $("#postal").text(data.postal);
+      $("#submit").click(function() {
+        var ipAddress = $("#ipAddress").val();
+        if (ipAddress) {
+          $.getJSON("https://ipapi.co/" + ipAddress + "/json/", function(data) {
+            $("#ip").text(data.ip);
+            $("#city").text(data.city);
+            $("#region").text(data.region);
+            $("#country").text(data.country_name);
+            $("#postal").text(data.postal);
+          });
+        }
       });
     });
   </script>
 </head>
 <body>
   <h1>IP Information</h1>
+  <form>
+    <label for="ipAddress">Enter IP Address:</label>
+    <input type="text" id="ipAddress" name="ipAddress">
+    <button type="button" id="submit">Submit</button>
+  </form>
+  <br>
   <p><strong>IP Address:</strong> <span id="ip"></span></p>
   <p><strong>City:</strong> <span id="city"></span></p>
   <p><strong>Region:</strong> <span id="region"></span></p>
