@@ -56,13 +56,26 @@
     <p>Please insert IP below:</p>
     <input type="text" id="ipInput">
     <button onclick="retrieveIP()">Submit</button>
-
+    
     <script>
-        function retrieveIP() {
-            const x = document.getElementById('ipInput').value;
-            console.log('IP you entered:', x);
-            // Add your further logic here for processing the entered IP
-        }
-    </script>
+      function retrieveIP() {
+          const x = document.getElementById('ipInput').value;
+          console.log('IP you entered:', x);
+          // Add your further logic here for processing the entered IP
+
+          // Example AJAX call to retrieve IP information
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "https://nordvpn.com/wp-admin/admin-ajax.php?action=get_user_info_data&ip=" + x, true);
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                  var response = xhr.responseText;
+                  // Process the response as needed
+                  console.log(response);
+              }
+          };
+          xhr.send();
+      }
+  </script>
+</head>
 </body>
 </html>
