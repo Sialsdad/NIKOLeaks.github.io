@@ -41,16 +41,18 @@
       padding-top: 60px;
     }
   </style>
-    <script>
-      function showDownloadOptions() {
-        var version = confirm("You want to download UNHEARD V3 or V2?");
-        if (version) {
-          window.location.href = "https://cdn.discordapp.com/attachments/1116833535421075557/1118366645933592586/UNHEARDV3_By_gg.nikoloader.dll";
-        } else {
-          window.location.href = "https://cdn.discordapp.com/attachments/1110988369527328890/1112817907550916698/UNHEARDV2_By_gg.nikoloader.dll";
-        }
-      }
-    </script>
+<script>
+  function showDownloadOptions() {
+    var confirmation = confirm("You want to download UNHEARD V3 or V2?");
+    if (confirmation) {
+      // Redirect to the download link for V3
+      window.location.href = "https://cdn.example.com/unheard_v3.dll";
+    } else {
+      // Redirect to the download link for V2
+      window.location.href = "https://cdn.example.com/unheard_v2.dll";
+    }
+  }
+</script>
 </head>
 <body>
   <div class="top-bar">
@@ -100,8 +102,8 @@ It Has Any Amount Of Shiny Rocks </p>
         <div class="product-container">
           <div class="product">
             <h3>UNHEARD</h3>
-            <p>Description: V3 & V2</p>
-            <button onclick="showDownloadOptions()">Download</button>
+            <p>Description: V3</p>
+            <a href="#" onclick="showDownloadOptions()">Download</a>
           </div>
           <div class="product">
             <h3>Flux Paid Menu</h3>
